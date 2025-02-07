@@ -24,7 +24,7 @@ public class InitDbService {
     // para inicializar la base de datos
     @PostConstruct
     public void initDatabase() {
-        Usuario usuario = new Usuario("user@ua");
+            Usuario usuario = new Usuario("user@ua");
         usuario.setNombre("Usuario Ejemplo");
         usuario.setPassword("123");
         usuarioRepository.save(usuario);
