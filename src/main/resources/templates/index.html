@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Tienda LoL</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <style>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tienda LoL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
         body {
             background-color: #0A0A12;
             color: white;
@@ -31,71 +31,70 @@
             text-align: center;
         }
     </style>
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-dark">
-            <div class="container"><a class="navbar-brand" href="#">Tienda LoL</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Tienda</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Ofertas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Contacto</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <header class="container text-center my-5">
-            <h1>Bienvenido a la tienda de League of Legends</h1>
-            <p>Encuentra los mejores artículos inspirados en el universo de LoL.</p>
-        </header>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card text-center">
-                        <img src="https://via.placeholder.com/300" class="card-img-top" alt="Producto 1">
-                        <div class="card-body">
-                            <h5 class="card-title">Figura de campeón</h5>
-                            <p class="card-text">Figura coleccionable de alta calidad.</p>
-                            <button class="btn btn-primary">Comprar</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card text-center">
-                        <img src="https://via.placeholder.com/300" class="card-img-top" alt="Producto 2">
-                        <div class="card-body">
-                            <h5 class="card-title">Camiseta temática</h5>
-                            <p class="card-text">Camiseta de League of Legends con diseño exclusivo.</p>
-                            <button class="btn btn-primary">Comprar</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card text-center">
-                        <img src="https://via.placeholder.com/300" class="card-img-top" alt="Producto 3">
-                        <div class="card-body">
-                            <h5 class="card-title">Teclado RGB</h5>
-                            <p class="card-text">Teclado mecánico con temática de LoL.</p>
-                            <button class="btn btn-primary">Comprar</button>
-                        </div>
-                    </div>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">Tienda LoL</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Tienda</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Ofertas</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+                <li class="nav-item"><a class="nav-link" href="TiendaController/formLogin">Salir</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header class="container text-center my-5">
+    <h1>Bienvenido a la tienda de League of Legends</h1>
+    <p>Encuentra los mejores artículos inspirados en el universo de LoL.</p>
+</header>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <img src="https://via.placeholder.com/300" class="card-img-top" alt="Producto 1">
+                <div class="card-body">
+                    <h5 class="card-title">Figura de campeón</h5>
+                    <p class="card-text">Figura coleccionable de alta calidad.</p>
+                    <button class="btn btn-primary">Comprar</button>
                 </div>
             </div>
         </div>
-        <footer class="footer">
-            <p>&copy; 2025 Tienda LoL. Todos los derechos reservados.</p>
-        </footer>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <img src="https://via.placeholder.com/300" class="card-img-top" alt="Producto 2">
+                <div class="card-body">
+                    <h5 class="card-title">Camiseta temática</h5>
+                    <p class="card-text">Camiseta de League of Legends con diseño exclusivo.</p>
+                    <button class="btn btn-primary">Comprar</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <img src="https://via.placeholder.com/300" class="card-img-top" alt="Producto 3">
+                <div class="card-body">
+                    <h5 class="card-title">Teclado RGB</h5>
+                    <p class="card-text">Teclado mecánico con temática de LoL.</p>
+                    <button class="btn btn-primary">Comprar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>&copy; 2025 Tienda LoL. Todos los derechos reservados.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
