@@ -21,18 +21,17 @@ public class Tarea implements Serializable {
     // Relación muchos-a-uno entre tareas y usuario
     @ManyToOne
     // Nombre de la columna en la BD que guarda físicamente
-    // el ID del usuario con el que está asociado una tarea
+    // el ID del usuario con el que está asociada una tarea
     @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    private UsuarioPrueba usuarioPrueba;
 
     // Constructor vacío necesario para JPA/Hibernate.
-    // No debe usarse desde la aplicación.
     public Tarea() {}
 
-    // Al crear una tarea la asociamos automáticamente a un usuario
-    public Tarea(Usuario usuario, String titulo) {
+    // Constructor para asociar una tarea a un usuario
+    public Tarea(UsuarioPrueba usuarioPrueba, String titulo) {
         this.titulo = titulo;
-        setUsuario(usuario); // Esto añadirá la tarea a la lista de tareas del usuario
+        setUsuario(usuarioPrueba); // Esto añadirá la tarea a la lista de tareas del usuario
     }
 
     // Getters y setters básicos
@@ -55,18 +54,14 @@ public class Tarea implements Serializable {
 
     // Getters y setters de la relación muchos-a-uno con Usuario
 
-    public Usuario getUsuario() {
-        return usuario;
+    public UsuarioPrueba getUsuario() {
+        return usuarioPrueba;
     }
 
-    // Método para establecer la relación con el usuario
-
-    public void setUsuario(Usuario usuario) {
-        // Comprueba si el usuario ya está establecido
-        if(this.usuario != usuario) {
-            this.usuario = usuario;
-            // Añade la tarea a la lista de tareas del usuario
-            usuario.addTarea(this);
+    public void setUsuario(UsuarioPrueba usuarioPrueba) {
+        if(this.usuarioPrueba != usuarioPrueba) {
+            this.usuarioPrueba = usuarioPrueba;
+            usuarioPrueba.addTarea(this);
         }
     }
 
@@ -76,15 +71,13 @@ public class Tarea implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Tarea tarea = (Tarea) o;
         if (id != null && tarea.id != null)
-            // Si tenemos los ID, comparamos por ID
             return Objects.equals(id, tarea.id);
-        // si no comparamos por campos obligatorios
-        return titulo.equals(tarea.titulo) &&
-                usuario.equals(tarea.usuario);
+        return titulo.equals(tarea.titulo) && usuarioPrueba.equals(tarea.usuarioPrueba);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(titulo, usuario);
+        return Objects.hash(titulo, usuarioPrueba);
     }
 }
+

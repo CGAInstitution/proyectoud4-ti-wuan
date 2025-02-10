@@ -1,10 +1,10 @@
 package madstodolist.repository;
 
-import madstodolist.model.Usuario;
+import madstodolist.model.UsuarioPrueba;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
-    Optional<Usuario> findByEmail(String s);
+public interface UsuarioRepository extends CrudRepository<UsuarioPrueba, Long> {
+    Optional<UsuarioPrueba> findByEmail(String s);
 }

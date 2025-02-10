@@ -1,7 +1,7 @@
 package madstodolist.service;
 
 import madstodolist.dto.UsuarioData;
-import madstodolist.model.Usuario;
+import madstodolist.model.UsuarioPrueba;
 import madstodolist.repository.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public LoginStatus login(String eMail, String password) {
-        Optional<Usuario> usuario = usuarioRepository.findByEmail(eMail);
+        Optional<UsuarioPrueba> usuario = usuarioRepository.findByEmail(eMail);
         if (!usuario.isPresent()) {
             return LoginStatus.USER_NOT_FOUND;
         } else if (!usuario.get().getPassword().equals(password)) {
@@ -41,7 +41,7 @@ public class UsuarioService {
     // El email no debe estar registrado en la base de datos
     @Transactional
     public UsuarioData registrar(UsuarioData usuario) {
-        Optional<Usuario> usuarioBD = usuarioRepository.findByEmail(usuario.getEmail());
+        Optional<UsuarioPrueba> usuarioBD = usuarioRepository.findByEmail(usuario.getEmail());
         if (usuarioBD.isPresent())
             throw new UsuarioServiceException("El usuario " + usuario.getEmail() + " ya está registrado");
         else if (usuario.getEmail() == null)
@@ -49,27 +49,27 @@ public class UsuarioService {
         else if (usuario.getPassword() == null)
             throw new UsuarioServiceException("El usuario no tiene password");
         else {
-            Usuario usuarioNuevo = modelMapper.map(usuario, Usuario.class);
-            usuarioNuevo = usuarioRepository.save(usuarioNuevo);
-            return modelMapper.map(usuarioNuevo, UsuarioData.class);
+            UsuarioPrueba usuarioPruebaNuevo = modelMapper.map(usuario, UsuarioPrueba.class);
+            usuarioPruebaNuevo = usuarioRepository.save(usuarioPruebaNuevo);
+            return modelMapper.map(usuarioPruebaNuevo, UsuarioData.class);
         }
     }
 
     @Transactional(readOnly = true)
     public UsuarioData findByEmail(String email) {
-        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
-        if (usuario == null) return null;
+        UsuarioPrueba usuarioPrueba = usuarioRepository.findByEmail(email).orElse(null);
+        if (usuarioPrueba == null) return null;
         else {
-            return modelMapper.map(usuario, UsuarioData.class);
+            return modelMapper.map(usuarioPrueba, UsuarioData.class);
         }
     }
 
     @Transactional(readOnly = true)
     public UsuarioData findById(Long usuarioId) {
-        Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
-        if (usuario == null) return null;
+        UsuarioPrueba usuarioPrueba = usuarioRepository.findById(usuarioId).orElse(null);
+        if (usuarioPrueba == null) return null;
         else {
-            return modelMapper.map(usuario, UsuarioData.class);
+            return modelMapper.map(usuarioPrueba, UsuarioData.class);
         }
     }
 }
