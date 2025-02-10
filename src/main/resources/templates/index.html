@@ -10,25 +10,51 @@
             background-color: #0A0A12;
             color: white;
         }
+        .numItems-text{
+            position: absolute;
+            right: 15px;
+            padding: 15px;
+            margin: 20px;
+            top: 36px;
+            font-weight: bold;
+            z-index: 5;"
+        }
+
         .navbar {
             background-color: #1A1A2E;
         }
+
         .btn-primary {
             background-color: #C89B3C;
             border-color: #C89B3C;
         }
+
         .btn-primary:hover {
             background-color: #A87D2B;
             border-color: #A87D2B;
         }
+
         .card {
             background-color: #111;
             border: 1px solid #C89B3C;
+            margin: 20px;
         }
+
+        .cart-button {
+            position: absolute;
+            right: 5px;
+            padding: 15px;
+            margin: 20px;
+            top: 50px;
+        }
+
         .footer {
             background-color: #1A1A2E;
             padding: 20px;
             text-align: center;
+            position: relative;
+            width: 100%;
+            bottom: 0;
         }
     </style>
 </head>
@@ -45,13 +71,19 @@
                 <li class="nav-item"><a class="nav-link" href="#">Tienda</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Ofertas</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
-                <li class="nav-item"><a class="nav-link" href="TiendaController/formLogin">Salir</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Salir</a></li>
+
             </ul>
         </div>
     </div>
 </nav>
 
 <header class="container text-center my-5">
+    <div>
+        <span class="numItems-text" th:text="">0</span>
+        <a class="cart-button btn btn-primary" th:href="@{/TiendaController/carrito}">Cesta 🛒</a>
+    </div>
+
     <h1>Bienvenido a la tienda de League of Legends</h1>
     <p>Encuentra los mejores artículos inspirados en el universo de LoL.</p>
 </header>
@@ -60,9 +92,9 @@
     <div class="row">
         <div class="col-md-4">
             <div class="card text-center">
-                <img src="https://via.placeholder.com/300" class="card-img-top" alt="Producto 1">
-                <div class="card-body">
-                    <h5 class="card-title">Figura de campeón</h5>
+                <img src="/img/figura_lol.jpg" class="card-img-top h-75" alt="Figura">
+                <div class="card-body text-white">
+                    <h5 class="card-title">Figuras</h5>
                     <p class="card-text">Figura coleccionable de alta calidad.</p>
                     <button class="btn btn-primary">Comprar</button>
                 </div>
@@ -70,9 +102,9 @@
         </div>
         <div class="col-md-4">
             <div class="card text-center">
-                <img src="https://via.placeholder.com/300" class="card-img-top" alt="Producto 2">
-                <div class="card-body">
-                    <h5 class="card-title">Camiseta temática</h5>
+                <img src="/img/camiseta_lol.jpg" class="card-img-top h-75" alt="Camiseta">
+                <div class="card-body text-white">
+                    <h5 class="card-title">Camisetas</h5>
                     <p class="card-text">Camiseta de League of Legends con diseño exclusivo.</p>
                     <button class="btn btn-primary">Comprar</button>
                 </div>
@@ -80,9 +112,29 @@
         </div>
         <div class="col-md-4">
             <div class="card text-center">
-                <img src="https://via.placeholder.com/300" class="card-img-top" alt="Producto 3">
-                <div class="card-body">
-                    <h5 class="card-title">Teclado RGB</h5>
+                <img src="/img/teclado_lol.jpg" class="card-img-top h-75" alt="Teclado">
+                <div class="card-body text-white">
+                    <h5 class="card-title">Teclados</h5>
+                    <p class="card-text">Teclado mecánico con temática de LoL.</p>
+                    <button class="btn btn-primary">Comprar</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <img src="/img/teclado_lol.jpg" class="card-img-top h-75" alt="Teclado">
+                <div class="card-body text-white">
+                    <h5 class="card-title">Teclados</h5>
+                    <p class="card-text">Teclado mecánico con temática de LoL.</p>
+                    <button class="btn btn-primary">Comprar</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <img src="/img/teclado_lol.jpg" class="card-img-top h-75" alt="Teclado">
+                <div class="card-body text-white">
+                    <h5 class="card-title">Teclados</h5>
                     <p class="card-text">Teclado mecánico con temática de LoL.</p>
                     <button class="btn btn-primary">Comprar</button>
                 </div>

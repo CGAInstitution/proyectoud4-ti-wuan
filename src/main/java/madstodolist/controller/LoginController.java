@@ -44,10 +44,10 @@ public class LoginController {
 
         if (loginStatus == UsuarioService.LoginStatus.LOGIN_OK) {
             UsuarioData usuario = usuarioService.findByEmail(loginData.geteMail());
-
+            session.setAttribute("userId", usuario.getId());
             managerUserSession.logearUsuario(usuario.getId());
 
-            return "index";
+            return "redirect:/Tienda";
         } else if (loginStatus == UsuarioService.LoginStatus.USER_NOT_FOUND) {
             model.addAttribute("error", "No existe usuario");
             return "formLogin";
