@@ -4756,11 +4756,12 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
     min-height: 1px;
-    padding: 1.25rem
+    padding: 1.25rem;
+
 }
 
 .card-title {
-    margin-bottom: .75rem
+    margin-bottom: .75rem;
 }
 
 .card-subtitle {
@@ -4770,10 +4771,11 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 
 .card-text:last-child {
     margin-bottom: 0
+
 }
 
 .card-link:hover {
-    text-decoration: none
+    text-decoration: none;
 }
 
 .card-link + .card-link {

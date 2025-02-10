@@ -9,13 +9,9 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class TiendaController {
 
-    @GetMapping("/TiendaController/formLogin")
-    public String mostrarFormularioLogin(Model model, HttpSession session) {
-
-        // Opcional: Cerrar sesión si es necesario
-        session.invalidate();
-
-        // Redirige a la vista formLogin.html
-        return "formLogin";
+    @GetMapping("/Tienda")
+    public String mostrarTienda(HttpSession session) {
+            session.getAttribute("userId");
+        return "index";
     }
 }
