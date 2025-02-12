@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin - Tienda LoL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Estilos corregidos */
+        body {
+            background-color: #0A0A12 !important;
+            color: white !important;
+        }
+        .navbar {
+            background-color: #1A1A2E !important;
+        }
+        .btn-primary {
+            background-color: #C89B3C !important;
+            border-color: #C89B3C !important;
+        }
+        .btn-primary:hover {
+            background-color: #A87D2B !important;
+            border-color: #A87D2B !important;
+        }
+        .card {
+            background-color: #111 !important;
+            border: 1px solid #C89B3C !important;
+            margin: 20px;
+        }
+        .footer {
+            background-color: #1A1A2E !important;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">Admin - Tienda LoL</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Usuarios</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Salir</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header class="container text-center my-5">
+    <h1>Panel de Administración</h1>
+    <p>Gestiona los usuarios desde aquí.</p>
+</header>
+
+<div class="container vh-100">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body text-white">
+                    <img src="/img/figura_lol.jpg" class="card-img-top h-75" alt="Figura">
+                    <h5 class="card-title">Crear Usuario</h5>
+                    <p class="card-text">Usa esta ventana para crear un usuario.</p>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#crearUsuarioModal">Crear Usuario</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body text-white">
+                    <img src="/img/camiseta_lol.jpg" class="card-img-top h-75" alt="Camiseta">
+                    <h5 class="card-title">Modificar Usuarios</h5>
+                    <p class="card-text">Usa esta ventana para modificar usuarios.</p>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modificarUsuarioModal">Modificar Usuarios</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body text-white">
+                    <img src="/img/camiseta_lol.jpg" class="card-img-top h-75" alt="Camiseta">
+                    <h5 class="card-title">Eliminar Usuarios</h5>
+                    <p class="card-text">Usa esta ventana para eliminar usuarios.</p>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eliminarUsuarioModal">Eliminar Usuarios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Incluir los modales desde el archivo externo -->
+<div th:replace="modals.html"></div>
+
+<footer class="footer">
+    <p>&copy; 2025 Tienda LoL. Todos los derechos reservados.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
