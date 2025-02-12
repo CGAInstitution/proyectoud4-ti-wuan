@@ -19,6 +19,9 @@ public class Usuario {
     @Column(nullable = false, length = 255)
     private String password;
 
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean administrador;
+
     // Getters y Setters
 
     public Usuario(Long id, String nombre, String email, String password) {
@@ -26,6 +29,14 @@ public class Usuario {
         this.nombre = nombre;
         this.email = email;
         this.password = password;
+    }
+
+    public Boolean getAdministrador() {
+        return administrador;
+    }
+
+    public void setAdministrador(Boolean administrador) {
+        this.administrador = administrador;
     }
 
     public Usuario() {
