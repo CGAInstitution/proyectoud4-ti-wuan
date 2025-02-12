@@ -18,7 +18,7 @@ public class TiendaLolApplication {
 
     @Bean
     CommandLineRunner run(
-            UserRepository usuarioRepo,
+            UsuarioRepository usuarioRepo,
             CategoriaRepository categoriaRepo,
             ProductoRepository productoRepo,
             PedidoRepository pedidoRepo,
@@ -28,8 +28,9 @@ public class TiendaLolApplication {
             // 1️⃣ Crear un usuario
             Usuario usuario = new Usuario();
             usuario.setNombre("Juan Pérez");
-            usuario.setEmail("juan@example.com");
-            usuario.setPassword("123456");
+            usuario.setEmail("prueba@gmail.com");
+            usuario.setPassword("123");
+            usuario.setAdministrador(false);
             usuarioRepo.save(usuario);
 
             // 2️⃣ Crear una categoría

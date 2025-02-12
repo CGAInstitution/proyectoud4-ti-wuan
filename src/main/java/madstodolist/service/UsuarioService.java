@@ -1,7 +1,7 @@
 package madstodolist.service;
 
 import madstodolist.dto.UsuarioData;
-import madstodolist.model.UsuarioPrueba;
+import madstodolist.model.Usuario;
 import madstodolist.repository.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -24,50 +24,91 @@ public class UsuarioService {
     @Autowired
     private ModelMapper modelMapper;
 
+    // Método para realizar login
     @Transactional(readOnly = true)
     public LoginStatus login(String eMail, String password) {
-        Optional<UsuarioPrueba> usuario = usuarioRepository.findByEmail(eMail);
+        // Buscar usuario por email
+        Optional<Usuario> usuario = usuarioRepository.findByEmail(eMail);
+
+        // Si el usuario no existe
         if (!usuario.isPresent()) {
             return LoginStatus.USER_NOT_FOUND;
-        } else if (!usuario.get().getPassword().equals(password)) {
+        }
+
+        // Si la contraseña es incorrecta
+        else if (!usuario.get().getPassword().equals(password)) {
             return LoginStatus.ERROR_PASSWORD;
-        } else {
+        }
+
+        // Si el login es correcto
+        else {
             return LoginStatus.LOGIN_OK;
         }
     }
 
-    // Se añade un usuario en la aplicación.
-    // El email y password del usuario deben ser distinto de null
-    // El email no debe estar registrado en la base de datos
+    // Método para registrar un nuevo usuario
     @Transactional
     public UsuarioData registrar(UsuarioData usuario) {
-        Optional<UsuarioPrueba> usuarioBD = usuarioRepository.findByEmail(usuario.getEmail());
-        if (usuarioBD.isPresent())
+        // Comprobamos si el email ya está registrado
+        Optional<Usuario> usuarioBD = usuarioRepository.findByEmail(usuario.getEmail());
+
+        // Si el usuario ya está registrado, lanzamos excepción
+        if (usuarioBD.isPresent()) {
             throw new UsuarioServiceException("El usuario " + usuario.getEmail() + " ya está registrado");
-        else if (usuario.getEmail() == null)
+        }
+
+        // Si el email es nulo, lanzamos excepción
+        else if (usuario.getEmail() == null || usuario.getEmail().isEmpty()) {
             throw new UsuarioServiceException("El usuario no tiene email");
-        else if (usuario.getPassword() == null)
+        }
+
+        // Si la contraseña es nula, lanzamos excepción
+        else if (usuario.getPassword() == null || usuario.getPassword().isEmpty()) {
             throw new UsuarioServiceException("El usuario no tiene password");
+        }
+
+        // Si todo está correcto, creamos el usuario
         else {
-            UsuarioPrueba usuarioPruebaNuevo = modelMapper.map(usuario, UsuarioPrueba.class);
-            usuarioPruebaNuevo = usuarioRepository.save(usuarioPruebaNuevo);
-            return modelMapper.map(usuarioPruebaNuevo, UsuarioData.class);
+            // Mapeamos el objeto de usuario de tipo UsuarioData a Usuario
+            Usuario usuarioNuevo = modelMapper.map(usuario, Usuario.class);
+
+            // Guardamos el nuevo usuario en la base de datos
+            usuarioNuevo = usuarioRepository.save(usuarioNuevo);
+
+            // Retornamos los datos del usuario ya guardado, mapeados de nuevo a UsuarioData
+            return modelMapper.map(usuarioNuevo, UsuarioData.class);
         }
     }
 
+    // Método para buscar un usuario por email
     @Transactional(readOnly = true)
     public UsuarioData findByEmail(String email) {
-        UsuarioPrueba usuarioPrueba = usuarioRepository.findByEmail(email).orElse(null);
-        if (usuarioPrueba == null) return null;
+        // Buscamos el usuario por su email
+        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
+
+        // Si no se encuentra el usuario, retornamos null
+        if (usuario == null) {
+            return null;
+        }
+
+        // Si el usuario se encuentra, lo mapeamos y retornamos
         else {
-            return modelMapper.map(usuarioPrueba, UsuarioData.class);
+            return modelMapper.map(usuario, UsuarioData.class);
         }
     }
 
+    // Método para buscar un usuario por ID
     @Transactional(readOnly = true)
     public UsuarioData findById(Long usuarioId) {
-        UsuarioPrueba usuarioPrueba = usuarioRepository.findById(usuarioId).orElse(null);
-        if (usuarioPrueba == null) return null;
+        // Buscamos el usuario por su ID
+        Usuario usuarioPrueba = usuarioRepository.findById(usuarioId).orElse(null);
+
+        // Si no se encuentra el usuario, retornamos null
+        if (usuarioPrueba == null) {
+            return null;
+        }
+
+        // Si el usuario se encuentra, lo mapeamos y retornamos
         else {
             return modelMapper.map(usuarioPrueba, UsuarioData.class);
         }

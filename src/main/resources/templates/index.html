@@ -68,7 +68,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Tienda</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Tienda/Perfil">Perfil</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Ofertas</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
                 <li class="nav-item"><a class="nav-link" href="/">Salir</a></li>
@@ -81,7 +81,7 @@
 <header class="container text-center my-5">
     <div>
         <span class="numItems-text">0</span>
-        <a class="cart-button btn btn-primary" onclick="location.href='/Tienda/Cesta'">Cesta 🛒</a>
+        <a class="cart-button btn btn-primary" th:href="@{/TiendaController/carrito}">Cesta 🛒</a>
     </div>
 
     <h1>Bienvenido a la tienda de League of Legends</h1>
