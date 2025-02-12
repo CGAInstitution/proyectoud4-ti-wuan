@@ -1,8 +1,8 @@
 package madstodolist.service;
 
 import madstodolist.model.Tarea;
+import madstodolist.model.Usuario;
 import madstodolist.repository.TareaRepository;
-import madstodolist.model.UsuarioPrueba;
 import madstodolist.repository.UsuarioRepository;
 import madstodolist.dto.TareaData;
 import org.slf4j.Logger;
@@ -33,11 +33,11 @@ public class TareaService {
     @Transactional
     public TareaData nuevaTareaUsuario(Long idUsuario, String tituloTarea) {
         logger.debug("Añadiendo tarea " + tituloTarea + " al usuario " + idUsuario);
-        UsuarioPrueba usuarioPrueba = usuarioRepository.findById(idUsuario).orElse(null);
-        if (usuarioPrueba == null) {
+        Usuario Usuario = usuarioRepository.findById(idUsuario).orElse(null);
+        if (Usuario == null) {
             throw new TareaServiceException("Usuario " + idUsuario + " no existe al crear tarea " + tituloTarea);
         }
-        Tarea tarea = new Tarea(usuarioPrueba, tituloTarea);
+        Tarea tarea = new Tarea(Usuario, tituloTarea);
         tareaRepository.save(tarea);
         return modelMapper.map(tarea, TareaData.class);
     }
@@ -45,12 +45,12 @@ public class TareaService {
     @Transactional(readOnly = true)
     public List<TareaData> allTareasUsuario(Long idUsuario) {
         logger.debug("Devolviendo todas las tareas del usuario " + idUsuario);
-        UsuarioPrueba usuarioPrueba = usuarioRepository.findById(idUsuario).orElse(null);
-        if (usuarioPrueba == null) {
+        Usuario Usuario = usuarioRepository.findById(idUsuario).orElse(null);
+        if (Usuario == null) {
             throw new TareaServiceException("Usuario " + idUsuario + " no existe al listar tareas ");
         }
         // Hacemos uso de Java Stream API para mapear la lista de entidades a DTOs.
-        List<TareaData> tareas = usuarioPrueba.getTareas().stream()
+        List<TareaData> tareas = Usuario.getTareas().stream()
                 .map(tarea -> modelMapper.map(tarea, TareaData.class))
                 .collect(Collectors.toList());
         // Ordenamos la lista por id de tarea
@@ -91,10 +91,10 @@ public class TareaService {
     @Transactional
     public boolean usuarioContieneTarea(Long usuarioId, Long tareaId) {
         Tarea tarea = tareaRepository.findById(tareaId).orElse(null);
-        UsuarioPrueba usuarioPrueba = usuarioRepository.findById(usuarioId).orElse(null);
-        if (tarea == null || usuarioPrueba == null) {
+        Usuario Usuario = usuarioRepository.findById(usuarioId).orElse(null);
+        if (tarea == null || Usuario == null) {
             throw new TareaServiceException("No existe tarea o usuario id");
         }
-        return usuarioPrueba.getTareas().contains(tarea);
+        return Usuario.getTareas().contains(tarea);
     }
 }

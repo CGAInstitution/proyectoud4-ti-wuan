@@ -1,8 +1,7 @@
 package madstodolist.repository;
 
-
 import madstodolist.model.Tarea;
-import madstodolist.model.UsuarioPrueba;
+import madstodolist.model.Usuario;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,39 +30,35 @@ public class TareaTest {
     @Test
     public void crearTarea() {
         // GIVEN
-        // Un usuario nuevo creado en memoria, sin conexión con la BD,
-
-        UsuarioPrueba usuarioPrueba = new UsuarioPrueba("juan.gutierrez@gmail.com");
+        // Un usuario nuevo creado en memoria, sin conexión con la BD
+        Usuario usuario = new Usuario();
+        usuario.setEmail("juan.gutierrez@gmail.com");
 
         // WHEN
-        // se crea una nueva tarea con ese usuario,
-
-        Tarea tarea = new Tarea(usuarioPrueba, "Práctica 1 de MADS");
+        // se crea una nueva tarea con ese usuario
+        Tarea tarea = new Tarea(usuario, "Práctica 1 de MADS");
 
         // THEN
         // el título y el usuario de la tarea son los correctos.
-
         assertThat(tarea.getTitulo()).isEqualTo("Práctica 1 de MADS");
-        assertThat(tarea.getUsuario()).isEqualTo(usuarioPrueba);
+        assertThat(tarea.getUsuario()).isEqualTo(usuario);
     }
 
     @Test
     public void laListaDeTareasDeUnUsuarioSeActualizaEnMemoriaConUnaNuevaTarea() {
         // GIVEN
-        // Un usuario nuevo creado en memoria, sin conexión con la BD,
-
-        UsuarioPrueba usuarioPrueba = new UsuarioPrueba("juan.gutierrez@gmail.com");
+        // Un usuario nuevo creado en memoria, sin conexión con la BD
+        Usuario usuario = new Usuario();
+        usuario.setEmail("juan.gutierrez@gmail.com");
 
         // WHEN
-        // se crea una tarea de ese usuario,
-
-        Set<Tarea> tareas = usuarioPrueba.getTareas();
-        Tarea tarea = new Tarea(usuarioPrueba, "Práctica 1 de MADS");
+        // se crea una tarea de ese usuario
+        Set<Tarea> tareas = usuario.getTareas();
+        Tarea tarea = new Tarea(usuario, "Práctica 1 de MADS");
 
         // THEN
-        // la tarea creada se ha añadido a la lista de tareas del usuario.
-
-        assertThat(usuarioPrueba.getTareas()).contains(tarea);
+        // la tarea creada se ha añadido a la lista de tareas del usuario
+        assertThat(usuario.getTareas()).contains(tarea);
         assertThat(tareas).contains(tarea);
     }
 
@@ -72,15 +67,15 @@ public class TareaTest {
         // GIVEN
         // Creadas tres tareas sin identificador, y dos de ellas con
         // la misma descripción
+        Usuario usuario = new Usuario();
+        usuario.setEmail("juan.gutierrez@gmail.com");
 
-        UsuarioPrueba usuarioPrueba = new UsuarioPrueba("juan.gutierrez@gmail.com");
-        Tarea tarea1 = new Tarea(usuarioPrueba, "Práctica 1 de MADS");
-        Tarea tarea2 = new Tarea(usuarioPrueba, "Práctica 1 de MADS");
-        Tarea tarea3 = new Tarea(usuarioPrueba, "Pagar el alquiler");
+        Tarea tarea1 = new Tarea(usuario, "Práctica 1 de MADS");
+        Tarea tarea2 = new Tarea(usuario, "Práctica 1 de MADS");
+        Tarea tarea3 = new Tarea(usuario, "Pagar el alquiler");
 
         // THEN
         // son iguales (Equal) las tareas que tienen la misma descripción.
-
         assertThat(tarea1).isEqualTo(tarea2);
         assertThat(tarea1).isNotEqualTo(tarea3);
     }
@@ -90,18 +85,19 @@ public class TareaTest {
         // GIVEN
         // Creadas tres tareas con distintas descripciones y dos de ellas
         // con el mismo identificador,
+        Usuario usuario = new Usuario();
+        usuario.setEmail("juan.gutierrez@gmail.com");
 
-        UsuarioPrueba usuarioPrueba = new UsuarioPrueba("juan.gutierrez@gmail.com");
-        Tarea tarea1 = new Tarea(usuarioPrueba, "Práctica 1 de MADS");
-        Tarea tarea2 = new Tarea(usuarioPrueba, "Lavar la ropa");
-        Tarea tarea3 = new Tarea(usuarioPrueba, "Pagar el alquiler");
+        Tarea tarea1 = new Tarea(usuario, "Práctica 1 de MADS");
+        Tarea tarea2 = new Tarea(usuario, "Lavar la ropa");
+        Tarea tarea3 = new Tarea(usuario, "Pagar el alquiler");
+
         tarea1.setId(1L);
         tarea2.setId(2L);
         tarea3.setId(1L);
 
         // THEN
         // son iguales (Equal) las tareas que tienen el mismo identificador.
-
         assertThat(tarea1).isEqualTo(tarea3);
         assertThat(tarea1).isNotEqualTo(tarea2);
     }
@@ -119,30 +115,27 @@ public class TareaTest {
     public void guardarTareaEnBaseDatos() {
         // GIVEN
         // Un usuario en la base de datos.
+        Usuario usuario = new Usuario();
+        usuario.setEmail("user@ua");
+        usuarioRepository.save(usuario);
 
-        UsuarioPrueba usuarioPrueba = new UsuarioPrueba("user@ua");
-        usuarioRepository.save(usuarioPrueba);
-
-        Tarea tarea = new Tarea(usuarioPrueba, "Práctica 1 de MADS");
+        Tarea tarea = new Tarea(usuario, "Práctica 1 de MADS");
 
         // WHEN
-        // salvamos la tarea en la BD,
-
+        // salvamos la tarea en la BD
         tareaRepository.save(tarea);
 
         // THEN
-        // se actualiza el id de la tarea,
-
+        // se actualiza el id de la tarea
         assertThat(tarea.getId()).isNotNull();
 
         // y con ese identificador se recupera de la base de datos la tarea
         // con los valores correctos de las propiedades y la relación con
         // el usuario actualizado también correctamente (la relación entre tarea
         // y usuario es EAGER).
-
         Tarea tareaBD = tareaRepository.findById(tarea.getId()).orElse(null);
         assertThat(tareaBD.getTitulo()).isEqualTo(tarea.getTitulo());
-        assertThat(tareaBD.getUsuario()).isEqualTo(usuarioPrueba);
+        assertThat(tareaBD.getUsuario()).isEqualTo(usuario);
     }
 
     @Test
@@ -151,13 +144,12 @@ public class TareaTest {
         // GIVEN
         // Un usuario nuevo que no está en la BD
         // y una tarea asociada a ese usuario,
-
-        UsuarioPrueba usuarioPrueba = new UsuarioPrueba("juan.gutierrez@gmail.com");
-        Tarea tarea = new Tarea(usuarioPrueba, "Práctica 1 de MADS");
+        Usuario usuario = new Usuario();
+        usuario.setEmail("juan.gutierrez@gmail.com");
+        Tarea tarea = new Tarea(usuario, "Práctica 1 de MADS");
 
         // WHEN // THEN
         // se lanza una excepción al intentar salvar la tarea en la BD
-
         Assertions.assertThrows(Exception.class, () -> {
             tareaRepository.save(tarea);
         });
@@ -168,25 +160,24 @@ public class TareaTest {
     public void unUsuarioTieneUnaListaDeTareas() {
         // GIVEN
         // Un usuario con 2 tareas en la base de datos
-        UsuarioPrueba usuarioPrueba = new UsuarioPrueba("user@ua");
-        usuarioRepository.save(usuarioPrueba);
-        Long usuarioId = usuarioPrueba.getId();
+        Usuario usuario = new Usuario();
+        usuario.setEmail("user@ua");
+        usuarioRepository.save(usuario);
+        Long usuarioId = usuario.getId();
 
-        Tarea tarea1 = new Tarea(usuarioPrueba, "Práctica 1 de MADS");
-        Tarea tarea2 = new Tarea(usuarioPrueba, "Renovar el DNI");
+        Tarea tarea1 = new Tarea(usuario, "Práctica 1 de MADS");
+        Tarea tarea2 = new Tarea(usuario, "Renovar el DNI");
         tareaRepository.save(tarea1);
         tareaRepository.save(tarea2);
 
         // WHEN
-        // recuperamos el ususario de la base de datos,
-
-        UsuarioPrueba usuarioPruebaRecuperado = usuarioRepository.findById(usuarioId).orElse(null);
+        // recuperamos el ususario de la base de datos
+        Usuario usuarioRecuperado = usuarioRepository.findById(usuarioId).orElse(null);
 
         // THEN
         // su lista de tareas también se recupera, porque se ha
         // definido la relación de usuario y tareas como EAGER.
-
-        assertThat(usuarioPruebaRecuperado.getTareas()).hasSize(2);
+        assertThat(usuarioRecuperado.getTareas()).hasSize(2);
     }
 
     @Test
@@ -194,40 +185,39 @@ public class TareaTest {
     public void añadirUnaTareaAUnUsuarioEnBD() {
         // GIVEN
         // Un usuario en la base de datos
-        UsuarioPrueba usuarioPrueba = new UsuarioPrueba("user@ua");
-        usuarioRepository.save(usuarioPrueba);
-        Long usuarioId = usuarioPrueba.getId();
+        Usuario usuario = new Usuario();
+        usuario.setEmail("user@ua");
+        usuarioRepository.save(usuario);
+        Long usuarioId = usuario.getId();
 
         // WHEN
         // Creamos una nueva tarea con el usuario recuperado de la BD
-        // y la salvamos,
-
-        UsuarioPrueba usuarioPruebaBD = usuarioRepository.findById(usuarioId).orElse(null);
-        Tarea tarea = new Tarea(usuarioPruebaBD, "Práctica 1 de MADS");
+        // y la salvamos
+        Usuario usuarioBD = usuarioRepository.findById(usuarioId).orElse(null);
+        Tarea tarea = new Tarea(usuarioBD, "Práctica 1 de MADS");
         tareaRepository.save(tarea);
         Long tareaId = tarea.getId();
 
         // THEN
         // la tarea queda guardada en la BD asociada al usuario
-
         Tarea tareaBD = tareaRepository.findById(tareaId).orElse(null);
         assertThat(tareaBD).isEqualTo(tarea);
-        assertThat(tarea.getUsuario()).isEqualTo(usuarioPruebaBD);
+        assertThat(tarea.getUsuario()).isEqualTo(usuarioBD);
 
         // y si recuperamos el usuario se obtiene la nueva tarea
-        usuarioPruebaBD = usuarioRepository.findById(usuarioId).orElse(null);
-        assertThat(usuarioPruebaBD.getTareas()).contains(tareaBD);
+        usuarioBD = usuarioRepository.findById(usuarioId).orElse(null);
+        assertThat(usuarioBD.getTareas()).contains(tareaBD);
     }
-
 
     @Test
     @Transactional
     public void cambioEnLaEntidadEnTransactionalModificaLaBD() {
         // GIVEN
         // Un usuario y una tarea en la base de datos
-        UsuarioPrueba usuarioPrueba = new UsuarioPrueba("user@ua");
-        usuarioRepository.save(usuarioPrueba);
-        Tarea tarea = new Tarea(usuarioPrueba, "Práctica 1 de MADS");
+        Usuario usuario = new Usuario();
+        usuario.setEmail("user@ua");
+        usuarioRepository.save(usuario);
+        Tarea tarea = new Tarea(usuario, "Práctica 1 de MADS");
         tareaRepository.save(tarea);
 
         // Recuperamos la tarea
@@ -236,12 +226,10 @@ public class TareaTest {
 
         // WHEN
         // modificamos la descripción de la tarea
-
         tarea.setTitulo("Esto es una prueba");
 
         // THEN
         // la descripción queda actualizada en la BD.
-
         Tarea tareaBD = tareaRepository.findById(tareaId).orElse(null);
         assertThat(tareaBD.getTitulo()).isEqualTo(tarea.getTitulo());
     }
