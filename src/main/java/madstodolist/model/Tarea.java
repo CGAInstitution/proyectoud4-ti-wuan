@@ -14,6 +14,7 @@ public class Tarea implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotNull
     private String titulo;
 
@@ -23,15 +24,15 @@ public class Tarea implements Serializable {
     // Nombre de la columna en la BD que guarda físicamente
     // el ID del usuario con el que está asociada una tarea
     @JoinColumn(name = "usuario_id")
-    private UsuarioPrueba usuarioPrueba;
+    private Usuario usuario;  // Cambié UsuarioPrueba por Usuario
 
     // Constructor vacío necesario para JPA/Hibernate.
     public Tarea() {}
 
     // Constructor para asociar una tarea a un usuario
-    public Tarea(UsuarioPrueba usuarioPrueba, String titulo) {
+    public Tarea(Usuario usuario, String titulo) {
         this.titulo = titulo;
-        setUsuario(usuarioPrueba); // Esto añadirá la tarea a la lista de tareas del usuario
+        setUsuario(usuario); // Esto añadirá la tarea a la lista de tareas del usuario
     }
 
     // Getters y setters básicos
@@ -54,14 +55,14 @@ public class Tarea implements Serializable {
 
     // Getters y setters de la relación muchos-a-uno con Usuario
 
-    public UsuarioPrueba getUsuario() {
-        return usuarioPrueba;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUsuario(UsuarioPrueba usuarioPrueba) {
-        if(this.usuarioPrueba != usuarioPrueba) {
-            this.usuarioPrueba = usuarioPrueba;
-            usuarioPrueba.addTarea(this);
+    public void setUsuario(Usuario usuario) {
+        if(this.usuario != usuario) {
+            this.usuario = usuario;
+            usuario.addTarea(this); // Cambié la llamada a addTarea para la nueva clase Usuario
         }
     }
 
@@ -72,12 +73,11 @@ public class Tarea implements Serializable {
         Tarea tarea = (Tarea) o;
         if (id != null && tarea.id != null)
             return Objects.equals(id, tarea.id);
-        return titulo.equals(tarea.titulo) && usuarioPrueba.equals(tarea.usuarioPrueba);
+        return titulo.equals(tarea.titulo) && usuario.equals(tarea.usuario); // Cambié UsuarioPrueba por Usuario
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(titulo, usuarioPrueba);
+        return Objects.hash(titulo, usuario); // Cambié UsuarioPrueba por Usuario
     }
 }
-
