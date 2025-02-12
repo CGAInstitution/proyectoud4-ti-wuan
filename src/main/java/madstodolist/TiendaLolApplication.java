@@ -18,7 +18,7 @@ public class TiendaLolApplication {
 
     @Bean
     CommandLineRunner run(
-            UserRepository usuarioRepo,
+            UsuarioRepository usuarioRepo,
             CategoriaRepository categoriaRepo,
             ProductoRepository productoRepo,
             PedidoRepository pedidoRepo,

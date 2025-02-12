@@ -67,10 +67,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Tienda">Inicio</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tienda</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Ofertas</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Tienda/Perfil">Perfil</a></li>
                 <li class="nav-item"><a class="nav-link" href="/">Salir</a></li>
 
             </ul>
@@ -80,7 +81,7 @@
 
 <header class="container text-center my-5">
     <div>
-        <span class="numItems-text" th:text="">0</span>
+        <span class="numItems-text" >0</span>
         <a class="cart-button btn btn-primary" th:href="@{/TiendaController/carrito}">Cesta 🛒</a>
     </div>
 
@@ -96,7 +97,7 @@
                 <div class="card-body text-white">
                     <h5 class="card-title">Figuras</h5>
                     <p class="card-text">Figura coleccionable de alta calidad.</p>
-                    <button class="btn btn-primary">Comprar</button>
+                    <button class="btn btn-primary" onclick="location.href='/Tienda/Figuras'">Comprar</button>
                 </div>
             </div>
         </div>
@@ -106,7 +107,7 @@
                 <div class="card-body text-white">
                     <h5 class="card-title">Camisetas</h5>
                     <p class="card-text">Camiseta de League of Legends con diseño exclusivo.</p>
-                    <button class="btn btn-primary">Comprar</button>
+                    <button class="btn btn-primary" onclick="location.href='/Tienda/Camisetas'">Comprar</button>
                 </div>
             </div>
         </div>
@@ -116,7 +117,7 @@
                 <div class="card-body text-white">
                     <h5 class="card-title">Teclados</h5>
                     <p class="card-text">Teclado mecánico con temática de LoL.</p>
-                    <button class="btn btn-primary">Comprar</button>
+                    <button class="btn btn-primary" onclick="location.href='/Tienda/Teclados'">Comprar</button>
                 </div>
             </div>
         </div>
@@ -126,7 +127,7 @@
                 <div class="card-body text-white">
                     <h5 class="card-title">Teclados</h5>
                     <p class="card-text">Teclado mecánico con temática de LoL.</p>
-                    <button class="btn btn-primary">Comprar</button>
+                    <button class="btn btn-primary" >Comprar</button>
                 </div>
             </div>
         </div>

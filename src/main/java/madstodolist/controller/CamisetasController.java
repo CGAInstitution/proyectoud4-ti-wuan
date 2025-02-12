@@ -7,14 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class TiendaController {
+public class CamisetasController {
 
-    @GetMapping("/Tienda")
-    public String mostrarTienda(HttpSession session) {
-            session.getAttribute("userId");
-        return "index";
+    @GetMapping("/Tienda/Camisetas")
+    public String mostrarFiguras(HttpSession session) {
+        session.getAttribute("userId");
+        return "camisetas";
     }
-
 
 //    @GetMapping("/Tienda/Camisetas")
 //    public String mostrarCamisetas(HttpSession session) {
