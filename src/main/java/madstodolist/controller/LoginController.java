@@ -48,7 +48,7 @@ public class LoginController {
             session.setAttribute("userId", usuario.getId());
             managerUserSession.logearUsuario(usuario.getId());
 
-            return "redirect:/Tareas";
+            return "redirect:/admin";
         }
         else if (loginStatus == UsuarioService.LoginStatus.LOGIN_OK){{
             UsuarioData usuario = usuarioService.findByEmail(loginData.geteMail());
