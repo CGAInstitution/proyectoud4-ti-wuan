@@ -1,7 +1,7 @@
 package madstodolist.service;
 
 import madstodolist.model.Tarea;
-import madstodolist.model.UsuarioPrueba;
+import madstodolist.model.Usuario;
 import madstodolist.repository.TareaRepository;
 import madstodolist.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +24,10 @@ public class InitDbService {
     // para inicializar la base de datos
     @PostConstruct
     public void initDatabase() {
-            UsuarioPrueba usuario = new UsuarioPrueba("user@ua");
+        Usuario usuario = new Usuario("user@ua");
         usuario.setNombre("Usuario Ejemplo");
         usuario.setPassword("123");
+        usuario.setAdministrador(true);
         usuarioRepository.save(usuario);
 
         Tarea tarea1 = new Tarea(usuario, "Lavar coche");

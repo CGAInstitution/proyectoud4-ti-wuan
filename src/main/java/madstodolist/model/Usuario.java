@@ -36,6 +36,9 @@ public class Usuario implements Serializable {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Tarea> tareas = new HashSet<>();
 
+    @Column(name = "administrador" , nullable = false, columnDefinition = "boolean default false")
+    private Boolean administrador;
+
     // Constructor vacío requerido por JPA
     public Usuario() {}
 
@@ -100,6 +103,14 @@ public class Usuario implements Serializable {
         if (tareas.remove(tarea)) {
             tarea.setUsuario(null);
         }
+    }
+
+    public Boolean getAdministrador() {
+        return administrador;
+    }
+
+    public void setAdministrador(Boolean administrador) {
+        this.administrador = administrador;
     }
 
     @Override
