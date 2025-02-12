@@ -42,7 +42,7 @@ public class TiendaLolApplication {
             Producto producto = new Producto();
             producto.setNombre("Figura de Ahri");
             producto.setDescripcion("Figura coleccionable de Ahri.");
-            producto.setPrecio(new BigDecimal("49.99"));
+            producto.setPrecio(new Double("49.99"));
             producto.setImagenUrl("https://example.com/ahri.jpg");
             producto.setCategoria(categoria);
             productoRepo.save(producto);

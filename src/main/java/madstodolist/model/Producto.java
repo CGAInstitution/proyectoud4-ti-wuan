@@ -18,7 +18,7 @@ public class Producto {
     private String descripcion;
 
     @Column(nullable = false, precision = 12, scale = 2)
-    private BigDecimal precio;
+    private Double precio;
 
     @Column(name = "imagen_url", length = 255)
     private String imagenUrl;
@@ -29,7 +29,7 @@ public class Producto {
 
     // Getters y Setters
 
-    public Producto(Long id, String nombre, String descripcion, BigDecimal precio, String imagenUrl, Categoria categoria) {
+    public Producto(Long id, String nombre, String descripcion, Double precio, String imagenUrl, Categoria categoria) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -65,11 +65,11 @@ public class Producto {
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(BigDecimal precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 
