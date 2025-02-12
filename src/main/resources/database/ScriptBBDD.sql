@@ -40,6 +40,7 @@ CREATE TABLE pedidos (
     usuario_id BIGINT NOT NULL,
     fecha DATE NOT NULL,
     estado ENUM('Pendiente', 'Enviado', 'Entregado') NOT NULL DEFAULT 'Pendiente',  -- ENUM en lugar de FK
+    administrador BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
     INDEX idx_usuario (usuario_id)
 );
