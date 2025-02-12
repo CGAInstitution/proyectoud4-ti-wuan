@@ -33,6 +33,9 @@ public class UsuarioPrueba implements Serializable {
     @OneToMany(mappedBy = "usuarioPrueba", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Tarea> tareas = new HashSet<>();
 
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean administrador;
+
 
     // Constructor vacío requerido por JPA
     public UsuarioPrueba() {}
@@ -85,6 +88,15 @@ public class UsuarioPrueba implements Serializable {
 
     public Set<Tarea> getTareas() {
         return tareas;
+    }
+
+
+    public Boolean getAdministrador() {
+        return administrador;
+    }
+
+    public void setAdministrador(Boolean administrador) {
+        this.administrador = administrador;
     }
 
     // Método helper para añadir una tarea a la lista y establecer la relación inversa
