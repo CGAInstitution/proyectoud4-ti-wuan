@@ -48,6 +48,15 @@ public class TiendaLolApplication {
             producto.setCategoria(categoria);
             productoRepo.save(producto);
 
+            Producto producto2 = new Producto();
+            producto2.setNombre("Figura de Yasuo");
+            producto2.setDescripcion("Figura coleccionable de Yasuo, personaje de 'League of Legends'.");
+            producto2.setPrecio(new Double("59.99"));
+            producto2.setImagenUrl("https://example.com/yasuo.jpg");
+            producto2.setCategoria(categoria);
+            productoRepo.save(producto2);
+
+
             // 4️⃣ Crear un pedido
             Pedido pedido = new Pedido();
             pedido.setUsuario(usuario);
@@ -61,6 +70,12 @@ public class TiendaLolApplication {
             pedidoProducto.setProducto(producto);
             pedidoProducto.setCantidad(2);
             pedidoProductoRepo.save(pedidoProducto);
+
+            PedidoProducto pedidoProducto2 = new PedidoProducto();
+            pedidoProducto2.setPedido(pedido);
+            pedidoProducto2.setProducto(producto2);
+            pedidoProducto2.setCantidad(1);
+            pedidoProductoRepo.save(pedidoProducto2);
 
             // ✅ Validar datos guardados
             System.out.println("Usuarios en BD: " + usuarioRepo.count());

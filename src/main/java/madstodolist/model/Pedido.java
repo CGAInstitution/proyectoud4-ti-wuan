@@ -27,13 +27,8 @@ public class Pedido {
     @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
     private DetallePedido detallePedido;
 
-    @ManyToMany
-    @JoinTable(
-        name = "pedido_producto",
-        joinColumns = @JoinColumn(name = "pedido_id"),
-        inverseJoinColumns = @JoinColumn(name = "producto_id")
-    )
-    private List<Producto> productos;
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<PedidoProducto> pedidoProductos;  // Cambiado a PedidoProducto
 
     // Getters y Setters
 
@@ -41,13 +36,13 @@ public class Pedido {
         PENDIENTE, ENVIADO, ENTREGADO
     }
 
-    public Pedido(Long id, Usuario usuario, Date fecha, EstadoPedido estado, DetallePedido detallePedido, List<Producto> productos) {
+    public Pedido(Long id, Usuario usuario, Date fecha, EstadoPedido estado, DetallePedido detallePedido, List<PedidoProducto> pedidoProductos) {
         this.id = id;
         this.usuario = usuario;
         this.fecha = fecha;
         this.estado = estado;
         this.detallePedido = detallePedido;
-        this.productos = productos;
+        this.pedidoProductos = pedidoProductos;
     }
 
     public Pedido() {
@@ -93,11 +88,11 @@ public class Pedido {
         this.detallePedido = detallePedido;
     }
 
-    public List<Producto> getProductos() {
-        return productos;
+    public List<PedidoProducto> getPedidoProductos() {
+        return pedidoProductos;
     }
 
-    public void setProductos(List<Producto> productos) {
-        this.productos = productos;
+    public void setPedidoProductos(List<PedidoProducto> pedidoProductos) {
+        this.pedidoProductos = pedidoProductos;
     }
 }

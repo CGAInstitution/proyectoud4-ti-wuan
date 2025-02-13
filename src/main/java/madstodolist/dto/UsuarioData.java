@@ -1,6 +1,8 @@
 package madstodolist.dto;
 
+import madstodolist.model.Pedido;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 // Data Transfer Object para la clase Usuario
@@ -12,9 +14,9 @@ public class UsuarioData {
     private String password;
     private Date fechaNacimiento;
     private Boolean administrador;
+    private List<Pedido> pedidos; // Lista para almacenar los pedidos del usuario
 
     // Getters y setters
-
 
     public Boolean getAdministrador() {
         return administrador;
@@ -48,9 +50,13 @@ public class UsuarioData {
         this.nombre = nombre;
     }
 
-    public void setPassword(String password) { this.password = password; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-    public String getPassword() { return password; }
+    public String getPassword() {
+        return password;
+    }
 
     public Date getFechaNacimiento() {
         return fechaNacimiento;
@@ -60,9 +66,16 @@ public class UsuarioData {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+
     // Sobreescribimos equals y hashCode para que dos usuarios sean iguales
     // si tienen el mismo ID (ignoramos el resto de atributos)
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

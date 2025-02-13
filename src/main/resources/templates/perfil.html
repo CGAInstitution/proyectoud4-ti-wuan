@@ -73,6 +73,47 @@
     </div>
 </div>
 
+<div class="container">
+    <h2 class="text-center my-4">Lista de Pedidos</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-dark table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Productos</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="pedido : ${usuario.pedidos}">
+                            <td th:text="${pedido.id}">1</td>
+                            <td th:text="${pedido.fecha}">01/01/2025</td>
+                            <!-- Mostrar el total de detallePedido -->
+                            <td th:text="${pedido.detallePedido != null ? pedido.detallePedido.total : 0.0}">$100.00</td>
+                            <td th:text="${pedido.estado}">Enviado</td>
+                            <td>
+                                <!-- Mostrar productos y sus cantidades usando PedidoProducto -->
+                                <ul>
+                                    <li th:each="pedidoProducto : ${pedido.pedidoProductos}">
+                                        <span th:text="${pedidoProducto.producto.nombre}">Producto</span> -
+                                        <span th:text="${pedidoProducto.cantidad}">Cantidad</span>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <footer class="footer">
     <p>&copy; 2025 Tienda LoL. Todos los derechos reservados.</p>
 </footer>

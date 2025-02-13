@@ -32,10 +32,38 @@
         <div class="modal-content p-4">
             <div class="modal-header">
                 <h5 class="modal-title">Crear Usuario</h5>
-                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body">
                 <p>Aquí puedes crear un nuevo usuario.</p>
+                <form method="post" th:action="@{/admin/registro}" th:object="${registroData}">
+                    <div class="mb-3">
+                        <label for="emailUsuario" class="form-label">Correo Electrónico</label>
+                        <input class="form-control" id="emailUsuario" placeholder="Ingrese su correo"
+                               type="text" th:field="*{email}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombreUsuario" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombreUsuario" placeholder="Ingrese su nombre"
+                               th:field="*{nombre}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="passwordUsuario" class="form-label">Contraseña</label>
+                        <input  class="form-control" id="passwordUsuario" placeholder="Ingrese su contraseña"
+                                type="password" th:field="*{password}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
+                        <input class="form-control" id="fechaNacimiento" type="text"
+                               placeholder="dd-MM-yyyy" pattern="\d{2}-\d{2}-\d{4}"
+                               th:field="*{fechaNacimiento}" required />
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" onclick="console.log('Botón presionado')">Crear Usuario</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -117,5 +145,30 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const fechaInput = document.getElementById("fechaNacimiento");
+
+        fechaInput.addEventListener("input", function (event) {
+            let value = fechaInput.value.replace(/\D/g, ""); // Elimina caracteres no numéricos
+            let formattedValue = "";
+
+            if (value.length > 0) {
+                formattedValue += value.substring(0, 2); // Día
+            }
+            if (value.length > 2) {
+                formattedValue += "-" + value.substring(2, 4); // Mes
+            }
+            if (value.length > 4) {
+                formattedValue += "-" + value.substring(4, 8); // Año
+            }
+
+            fechaInput.value = formattedValue;
+        });
+    });
+</script>
+
+
 </body>
 </html>
