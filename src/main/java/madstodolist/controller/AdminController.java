@@ -6,6 +6,7 @@ import madstodolist.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,32 +23,34 @@ public class AdminController {
     UsuarioService usuarioService;
 
     @GetMapping("/admin")
-    public String mostrarTienda(HttpSession session) {
+    public String mostrarTienda(HttpSession session, Model model) {
         session.getAttribute("userId");
+        model.addAttribute("registroData", new RegistroData());
         return "admin";
     }
 
     @PostMapping("/admin/registro")
-    public ResponseEntity<String> registroSubmit(@RequestBody @Valid RegistroData registroData, BindingResult result) {
-        System.out.println("Solicitud recibida: " + registroData);  // <-- Log en backend
+    public String registroUsuario(@Valid RegistroData registroData, BindingResult bindingResult, Model model) {
 
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body("Datos inválidos");
+        if (bindingResult.hasErrors() || registroData.getEmail().isEmpty() || registroData.getNombre().isEmpty() || registroData.getPassword().isEmpty()) {
+            model.addAttribute("errorMessage", "Errores en el formulario. Por favor, corrige los campos marcados y asegúrate de que todos los campos estén llenos.");
+
+            model.addAttribute("registroData", registroData);
+            return "admin";
         }
 
-        if (usuarioService.findByEmail(registroData.getEmail()) != null) {
-            return ResponseEntity.badRequest().body("El usuario " + registroData.getEmail() + " ya existe");
-        }
+        System.out.println("Registrando usuario con email: " + registroData.getEmail());
 
-        UsuarioData usuario = new UsuarioData();
-        usuario.setEmail(registroData.getEmail());
-        usuario.setPassword(registroData.getPassword());
-        usuario.setFechaNacimiento(registroData.getFechaNacimiento());
-        usuario.setNombre(registroData.getNombre());
+        UsuarioData usuarioData = new UsuarioData();
+        usuarioData.setEmail(registroData.getEmail());
+        usuarioData.setNombre(registroData.getNombre());
+        usuarioData.setPassword(registroData.getPassword());
+        usuarioData.setAdministrador(false);
 
-        usuarioService.registrar(usuario);
-        return ResponseEntity.ok("Usuario registrado exitosamente");
+        usuarioService.registrar(usuarioData);
+        System.out.println("Usuario registrado con éxito.");
+
+        return "redirect:/admin";
     }
-
 
 }

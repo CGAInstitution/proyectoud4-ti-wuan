@@ -36,24 +36,34 @@
             </div>
             <div class="modal-body">
                 <p>Aquí puedes crear un nuevo usuario.</p>
-                <form>
-                    <div class="mb-3">
-                        <label for="nombreUsuario" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombreUsuario" placeholder="Ingrese su nombre">
-                    </div>
+                <form method="post" th:action="@{/admin/registro}" th:object="${registroData}">
                     <div class="mb-3">
                         <label for="emailUsuario" class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" id="emailUsuario" placeholder="Ingrese su correo">
+                        <input class="form-control" id="emailUsuario" placeholder="Ingrese su correo"
+                               type="text" th:field="*{email}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombreUsuario" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombreUsuario" placeholder="Ingrese su nombre"
+                               th:field="*{nombre}" required/>
                     </div>
                     <div class="mb-3">
                         <label for="passwordUsuario" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="passwordUsuario" placeholder="Ingrese su contraseña">
+                        <input  class="form-control" id="passwordUsuario" placeholder="Ingrese su contraseña"
+                                type="password" th:field="*{password}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
+                        <input class="form-control" id="fechaNacimiento" type="text"
+                               placeholder="dd-MM-yyyy" pattern="\d{2}-\d{2}-\d{4}"
+                               th:field="*{fechaNacimiento}" required />
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" onclick="console.log('Botón presionado')">Crear Usuario</button>
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" onclick="crearUsuario()">Crear Usuario</button>
             </div>
         </div>
     </div>
@@ -137,49 +147,28 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    function crearUsuario() {
-        let nombre = document.getElementById("nombreUsuario").value;
-        let email = document.getElementById("emailUsuario").value;
-        let password = document.getElementById("passwordUsuario").value;
+    document.addEventListener("DOMContentLoaded", function () {
+        const fechaInput = document.getElementById("fechaNacimiento");
 
-        if (nombre && email && password) {
-            let usuarioData = {
-                nombre: nombre,
-                email: email,
-                password: password
-            };
+        fechaInput.addEventListener("input", function (event) {
+            let value = fechaInput.value.replace(/\D/g, ""); // Elimina caracteres no numéricos
+            let formattedValue = "";
 
-            console.log("Enviando datos:", usuarioData);  // <-- Log de depuración
+            if (value.length > 0) {
+                formattedValue += value.substring(0, 2); // Día
+            }
+            if (value.length > 2) {
+                formattedValue += "-" + value.substring(2, 4); // Mes
+            }
+            if (value.length > 4) {
+                formattedValue += "-" + value.substring(4, 8); // Año
+            }
 
-            fetch('/admin/registro', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(usuarioData)
-            })
-                .then(response => {
-                    console.log("Respuesta recibida:", response);  // <-- Log de depuración
-                    return response.text().then(data => {
-                        console.log("Datos de respuesta:", data);  // <-- Log de depuración
-
-                        if (response.ok) {
-                            alert('Usuario creado exitosamente');
-                            let modal = bootstrap.Modal.getInstance(document.getElementById('crearUsuarioModal'));
-                            modal.hide();
-                        } else {
-                            alert('Error en la creación del usuario: ' + data);
-                        }
-                    });
-                })
-                .catch(error => {
-                    console.error('Error en la solicitud:', error);
-                    alert('Error al conectar con el servidor: ' + error.message);
-                });
-        } else {
-            alert("Por favor, completa todos los campos.");
-        }
-    }
+            fechaInput.value = formattedValue;
+        });
+    });
 </script>
+
+
 </body>
 </html>
