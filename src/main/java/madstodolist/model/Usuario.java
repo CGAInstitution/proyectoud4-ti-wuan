@@ -36,6 +36,10 @@ public class Usuario implements Serializable {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Tarea> tareas = new HashSet<>();
 
+    // Relación con pedidos
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Pedido> pedidos = new HashSet<>();  // Nueva relación con pedidos
+
     @Column(name = "administrador" , nullable = false, columnDefinition = "boolean default false")
     private Boolean administrador;
 
@@ -92,6 +96,10 @@ public class Usuario implements Serializable {
         return tareas;
     }
 
+    public void setTareas(Set<Tarea> tareas) {
+        this.tareas = tareas;
+    }
+
     // Métodos helper para manejar tareas
     public void addTarea(Tarea tarea) {
         if (tareas.contains(tarea)) return;
@@ -103,6 +111,20 @@ public class Usuario implements Serializable {
         if (tareas.remove(tarea)) {
             tarea.setUsuario(null);
         }
+    }
+
+    public Set<Pedido> getPedidos() {  // Getter para pedidos
+        return pedidos;
+    }
+
+    public void addPedido(Pedido pedido) {
+        if (pedidos.contains(pedido)) return;
+        pedidos.add(pedido);
+        pedido.setUsuario(this);
+    }
+
+    public void setPedidos(Set<Pedido> pedidos) {
+        this.pedidos = pedidos;
     }
 
     public Boolean getAdministrador() {
