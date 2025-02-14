@@ -22,7 +22,8 @@ public class TiendaLolApplication {
             CategoriaRepository categoriaRepo,
             ProductoRepository productoRepo,
             PedidoRepository pedidoRepo,
-            PedidoProductoRepository pedidoProductoRepo
+            PedidoProductoRepository pedidoProductoRepo,
+            DetallePedidoRepository detallePedidoRepo
     ) {
         return args -> {
             // 1️⃣ Crear un usuario
@@ -57,12 +58,24 @@ public class TiendaLolApplication {
             productoRepo.save(producto2);
 
 
+
             // 4️⃣ Crear un pedido
             Pedido pedido = new Pedido();
             pedido.setUsuario(usuario);
             pedido.setFecha(new Date());
             pedido.setEstado(Pedido.EstadoPedido.PENDIENTE);
+            pedido.setDetallePedido(new DetallePedido(1L, pedido, "Calle Falsa 123", DetallePedido.MetodoPago.TARJETA));
+            pedido.setTotal(pedido.calcularTotal());
             pedidoRepo.save(pedido);
+
+            Pedido pedido2 = new Pedido();
+            pedido2.setUsuario(usuario);
+            pedido2.setFecha(new Date());
+            pedido2.setEstado(Pedido.EstadoPedido.PENDIENTE);
+            pedido2.setDetallePedido(new DetallePedido(2L, pedido2, "Calle Falsa 456", DetallePedido.MetodoPago.PAYPAL));
+            pedido2.setTotal(pedido2.calcularTotal());
+            pedidoRepo.save(pedido2);
+
 
             // 5️⃣ Asociar el pedido con el producto
             PedidoProducto pedidoProducto = new PedidoProducto();
@@ -76,6 +89,18 @@ public class TiendaLolApplication {
             pedidoProducto2.setProducto(producto2);
             pedidoProducto2.setCantidad(1);
             pedidoProductoRepo.save(pedidoProducto2);
+
+            PedidoProducto pedidoProducto3 = new PedidoProducto();
+            pedidoProducto3.setPedido(pedido2);
+            pedidoProducto3.setProducto(producto2);
+            pedidoProducto3.setCantidad(3);
+            pedidoProductoRepo.save(pedidoProducto3);
+
+            PedidoProducto pedidoProducto4 = new PedidoProducto();
+            pedidoProducto4.setPedido(pedido2);
+            pedidoProducto4.setProducto(producto);
+            pedidoProducto4.setCantidad(4);
+            pedidoProductoRepo.save(pedidoProducto4);
 
             // ✅ Validar datos guardados
             System.out.println("Usuarios en BD: " + usuarioRepo.count());

@@ -28,7 +28,10 @@ public class Pedido {
     private DetallePedido detallePedido;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<PedidoProducto> pedidoProductos;  // Cambiado a PedidoProducto
+    private List<PedidoProducto> pedidoProductos;
+
+    @Column(nullable = false)
+    private double total;
 
     // Getters y Setters
 
@@ -43,6 +46,7 @@ public class Pedido {
         this.estado = estado;
         this.detallePedido = detallePedido;
         this.pedidoProductos = pedidoProductos;
+        this.total = calcularTotal();
     }
 
     public Pedido() {
@@ -94,5 +98,21 @@ public class Pedido {
 
     public void setPedidoProductos(List<PedidoProducto> pedidoProductos) {
         this.pedidoProductos = pedidoProductos;
+        this.total = calcularTotal();
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public double calcularTotal() {
+        if (pedidoProductos == null) return 0.0; // Retorna 0 si la lista es null
+        return pedidoProductos.stream()
+                .mapToDouble(pp -> pp.getCantidad() * pp.getProducto().getPrecio())
+                .sum();
     }
 }
