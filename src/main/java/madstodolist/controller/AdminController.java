@@ -84,4 +84,16 @@ public class AdminController {
 
             return "redirect:/admin";
     }
+
+    @PostMapping("/admin/deleteUser")
+    public String deleteUser(@Valid RegistroData registroData, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors() || registroData.getEmail().isEmpty()) {
+            model.addAttribute("errorMessage", "Errores en el formulario. Por favor, corrige los campos marcados y asegúrate de que todos los campos estén llenos.");
+
+            model.addAttribute("registroData", registroData);
+        }
+
+        usuarioService.deleteUser(registroData.getEmail());
+        return "redirect:/admin";
+    }
 }

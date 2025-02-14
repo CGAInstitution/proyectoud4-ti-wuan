@@ -112,7 +112,6 @@
                     </div>
                 </form>
                 <form  method="get"  th:action="@{/admin}">
-                    <p th:text="${usuarios}"></p>
                     <table class="table table-striped">
                         <thead>
                         <tr>
@@ -144,7 +143,36 @@
                 <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <p>¿Estás seguro de que deseas eliminar un usuario?</p>
+                <p>Ingrese el correo del usuario que desea eliminar.</p>
+                <form method="post" th:action="@{/admin/deleteUser}" th:object="${registroData}">
+                    <div class="mb-3">
+                        <label for="emailDelUsuario" class="form-label">Correo Electrónico</label>
+                        <input class="form-control" id="emailDelUsuario" placeholder="Ingrese su correo"
+                               type="text" th:field="*{email}" required/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar Usuario</button>
+                    </div>
+                </form>
+                <form  method="get"  th:action="@{/admin}">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="usuario : ${usuarios}">
+                            <td th:text="${usuario.id}"></td>
+                            <td th:text="${usuario.nombre}"></td>
+                            <td th:text="${usuario.email}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
             </div>
         </div>
     </div>

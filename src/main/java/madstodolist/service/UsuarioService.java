@@ -133,4 +133,17 @@ public class UsuarioService {
 
     }
 
+    // Método para eliminar un usuario
+    @Transactional
+    public void deleteUser(String email) {
+        Optional<Usuario> usuarioBD = usuarioRepository.findByEmail(email);
+
+        if (usuarioBD.isPresent()) {
+            Usuario usuario = usuarioBD.get();
+            usuarioRepository.delete(usuario);
+        } else {
+            throw new UsuarioServiceException("El usuario no existe");
+        }
+    }
+
 }
