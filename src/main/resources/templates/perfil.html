@@ -46,7 +46,6 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="/Tienda">Inicio</a></li>
-                <li class="nav-item"><a class="nav-link" href="/Perfil">Perfil</a></li>
                 <li class="nav-item"><a class="nav-link" href="/">Salir</a></li>
             </ul>
         </div>
@@ -84,6 +83,8 @@
                         <tr>
                             <th>ID</th>
                             <th>Fecha</th>
+                            <th>Dirección de Envío</th>
+                            <th>Método de Pago</th>
                             <th>Total</th>
                             <th>Estado</th>
                             <th>Productos</th>
@@ -93,8 +94,10 @@
                         <tr th:each="pedido : ${usuario.pedidos}">
                             <td th:text="${pedido.id}">1</td>
                             <td th:text="${pedido.fecha}">01/01/2025</td>
+                            <td th:text="${pedido.detallePedido.direccionEnvio}">Calle 123 </td>
+                            <td th:text="${pedido.detallePedido.metodoPago}">Tarjeta </td>
                             <!-- Mostrar el total de detallePedido -->
-                            <td th:text="${pedido.detallePedido != null ? pedido.detallePedido.total : 0.0}">$100.00</td>
+                            <td th:text="${pedido.total}">$100.00</td>
                             <td th:text="${pedido.estado}">Enviado</td>
                             <td>
                                 <!-- Mostrar productos y sus cantidades usando PedidoProducto -->
