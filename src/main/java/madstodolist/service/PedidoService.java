@@ -20,4 +20,9 @@ public class PedidoService {
         double nuevoTotal = pedido.calcularTotal();
         pedidoRepository.actualizarTotalPedido(pedidoId, nuevoTotal);
     }
+
+    @Transactional
+    public void crearPedido(Pedido pedido) {
+        pedidoRepository.save(pedido);
+    }
 }

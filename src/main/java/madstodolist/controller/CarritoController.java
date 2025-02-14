@@ -2,13 +2,11 @@ package madstodolist.controller;
 
 import madstodolist.model.Pedido;
 import madstodolist.model.Producto;
+import madstodolist.service.PedidoService;
 import madstodolist.service.ProductoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -20,9 +18,11 @@ import java.util.Optional;
 public class CarritoController {
 
     private final ProductoService productoService;
+    private final PedidoService pedidoService;
 
-    public CarritoController(ProductoService productoService) {
+    public CarritoController(ProductoService productoService, PedidoService pedidoService) {
         this.productoService = productoService;
+        this.pedidoService = pedidoService;
     }
 
     @GetMapping
@@ -38,26 +38,11 @@ public class CarritoController {
         return "cesta";
     }
 
-    @GetMapping("/agregar/{id}")
-    public String agregarAlCarrito(@PathVariable Long id, HttpSession session) {
-        List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
-        if (carrito == null) {
-            carrito = new ArrayList<>();
-        }
-
-        Optional<Producto> productoOpt = productoService.obtenerProductoPorId(id);
-        productoOpt.ifPresent(carrito::add);
-
-        session.setAttribute("carrito", carrito);
-        return "redirect:/Tienda/Cesta";
-    }
-
     @GetMapping("/eliminar/{id}")
     public String eliminarDelCarrito(@PathVariable Long id, HttpSession session) {
         List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
 
         if (carrito != null && !carrito.isEmpty()) {
-            // Buscar el primer producto con el id igual al que se pasa como parámetro
             Producto productoAEliminar = null;
             for (Producto producto : carrito) {
                 if (producto.getId().equals(id)) {
@@ -66,7 +51,6 @@ public class CarritoController {
                 }
             }
 
-            // Si se encontró un producto a eliminar, lo eliminamos
             if (productoAEliminar != null) {
                 carrito.remove(productoAEliminar);
             }
@@ -77,11 +61,18 @@ public class CarritoController {
     }
 
 
+    @PostMapping("/checkout")
+    public String finalizarCompra(@RequestParam String direccion, @RequestParam String metodoPago, Model model, HttpSession session) {
+        List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
+
+        if (carrito == null || carrito.isEmpty()) {
+            model.addAttribute("mensaje", "El carrito está vacío.");
+            return "redirect:/Tienda/Cesta";
+        }
 
 
-    @GetMapping("/checkout")
-    public String finalizarCompra(HttpSession session) {
         session.removeAttribute("carrito");
+
         return "redirect:/Tienda";
     }
 }

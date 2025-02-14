@@ -32,6 +32,18 @@
         .card {
             background-color: #111;
             border: 1px solid #C89B3C;
+            color: white;
+        }
+
+        .modal-content {
+            background-color: #111;
+            color: white;
+            border: 1px solid #C89B3C;
+        }
+
+        .modal-header {
+            background-color: #1A1A2E;
+            color: white;
         }
 
         .footer {
@@ -69,11 +81,41 @@
         <div class="col-md-4">
             <div class="card p-3">
                 <h4>Total: <span th:text="'$' + ${total}"></span></h4>
-                <a class="btn btn-success w-100" th:href="@{/Tienda/Cesta/checkout}">Finalizar Compra</a>
+                <h4>Mensaje:<span th:text="${mensaje}"></span></h4>
+                <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#checkoutModal">Finalizar Compra</button>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="checkoutModalLabel">Último paso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/Tienda/Cesta/checkout}" method="post">
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Introduce tu dirección de envío" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="metodoPago" class="form-label">Método de Pago</label>
+                        <select class="form-select" id="metodoPago" name="metodoPago" required>
+                            <option value="TARJETA">Tarjeta</option>
+                            <option value="PAYPAL">PayPal</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Comprar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <footer class="footer">
     <p>&copy; 2025 Tienda LoL. Todos los derechos reservados.</p>
 </footer>
