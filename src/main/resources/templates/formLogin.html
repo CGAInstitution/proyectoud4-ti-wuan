@@ -6,9 +6,13 @@
     <title>Login - Tienda LoL</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
+        html, body {
             background-color: #0A0A12;
             color: white;
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
         }
 
         .navbar {
@@ -29,8 +33,8 @@
             background-color: #1A1A2E;
             padding: 20px;
             text-align: center;
-            position: relative;
             width: 100%;
+            position: absolute;
             bottom: 0;
         }
 
@@ -61,20 +65,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">Tienda LoL</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="/Tienda">Inicio</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Tienda</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Ofertas</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
-                <li class="nav-item"><a class="nav-link" href="/Tienda/Perfil">Perfil</a></li>
-                <li class="nav-item"><a class="nav-link" href="/">Salir</a></li>
-            </ul>
-        </div>
+        <a class="navbar-brand">Tienda LoL</a>
     </div>
 </nav>
 
