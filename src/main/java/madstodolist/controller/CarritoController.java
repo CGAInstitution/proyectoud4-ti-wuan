@@ -26,13 +26,8 @@ public class CarritoController {
     }
 
     @GetMapping
-    public String mostrarCarrito(HttpSession session, Model model) {
-        List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
-        if (carrito == null) {
-            carrito = new ArrayList<>();
-            carrito.add(new Producto(1L, "Producto 1", "Desc producto 1", 10.0, "", null));
-            carrito.add(new Producto(2L, "Producto 2", "Desc producto 2", 10.0, "", null));
-        }
+    public String mostrarCarrito( Model model) {
+        List<Producto> carrito = productoService.obtenerProductos();
         double total = carrito.stream().mapToDouble(Producto::getPrecio).sum();
 
         model.addAttribute("carrito", carrito);
@@ -42,7 +37,7 @@ public class CarritoController {
 
     @GetMapping("/agregar/{id}")
     public String agregarAlCarrito(@PathVariable Long id, HttpSession session) {
-        List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
+        List<Producto> carrito = productoService.obtenerProductos();
         if (carrito == null) {
             carrito = new ArrayList<>();
         }
@@ -54,21 +49,19 @@ public class CarritoController {
         return "cesta";
     }
 
-    @GetMapping("/cesta/eliminar/{id}")
+    @GetMapping("/eliminar/{id}")
     public String eliminarDelCarrito(@PathVariable(value = "id") Long id, Model model) {
-        System.out.println("Hola");
-        List<Producto> carrito = new ArrayList<>();
-        carrito.add(productoService.obtenerProductoPorId(1L).get());
-        carrito.add(productoService.obtenerProductoPorId(2L).get());
+        List<Producto> carrito = productoService.obtenerProductos();
         if (carrito != null) {
             carrito.removeIf(producto -> producto.getId().equals(id));
         }
-
+        double total = carrito.stream().mapToDouble(Producto::getPrecio).sum();
         model.addAttribute("carrito", carrito);
+        model.addAttribute("total", total);
         return "cesta";
     }
 
-    @GetMapping("/cesta/checkout")
+    @GetMapping("/checkout")
     public String finalizarCompra(HttpSession session) {
         session.removeAttribute("carrito");
         return "redirect:/Tienda";

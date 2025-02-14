@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import java.util.Date;
+import java.util.List;
 
 @SpringBootApplication
 public class TiendaLolApplication {
@@ -93,6 +94,9 @@ public class TiendaLolApplication {
             // ✅ Validar total de los pedidos
             System.out.println("Total Pedido 1: " + pedidoRepo.findById(pedido.getId()).get().getTotal());
             System.out.println("Total Pedido 2: " + pedidoRepo.findById(pedido2.getId()).get().getTotal());
+
+            List<Producto> productos = productoRepo.findAll();
+            System.out.println("Productos en BD:" + productos.size());
         };
     }
 }
