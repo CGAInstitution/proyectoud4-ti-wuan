@@ -1,5 +1,6 @@
 package madstodolist.controller;
 
+import madstodolist.model.Pedido;
 import madstodolist.model.Producto;
 import madstodolist.service.ProductoService;
 import org.springframework.stereotype.Controller;
@@ -54,17 +55,20 @@ public class CarritoController {
     }
 
     @GetMapping("/cesta/eliminar/{id}")
-    public String eliminarDelCarrito(@PathVariable Long id, HttpSession session) {
-        List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
+    public String eliminarDelCarrito(@PathVariable(value = "id") Long id, Model model) {
+        System.out.println("Hola");
+        List<Producto> carrito = new ArrayList<>();
+        carrito.add(productoService.obtenerProductoPorId(1L).get());
+        carrito.add(productoService.obtenerProductoPorId(2L).get());
         if (carrito != null) {
             carrito.removeIf(producto -> producto.getId().equals(id));
         }
 
-        session.setAttribute("carrito", carrito);
-        return "redirect:/Tienda/Cesta";
+        model.addAttribute("carrito", carrito);
+        return "cesta";
     }
 
-    @GetMapping("/checkout")
+    @GetMapping("/cesta/checkout")
     public String finalizarCompra(HttpSession session) {
         session.removeAttribute("carrito");
         return "redirect:/Tienda";
