@@ -13,12 +13,14 @@
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(200, 155, 60, 0.5);
         }
+
         .close {
             color: #C89B3C;
             font-size: 20px;
             font-weight: bold;
             cursor: pointer;
         }
+
         .close:hover {
             color: #A87D2B;
         }
@@ -49,19 +51,20 @@
                     </div>
                     <div class="mb-3">
                         <label for="passwordUsuario" class="form-label">Contraseña</label>
-                        <input  class="form-control" id="passwordUsuario" placeholder="Ingrese su contraseña"
-                                type="password" th:field="*{password}" required/>
+                        <input class="form-control" id="passwordUsuario" placeholder="Ingrese su contraseña"
+                               type="password" th:field="*{password}" required/>
                     </div>
                     <div class="mb-3">
                         <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
                         <input class="form-control" id="fechaNacimiento" type="text"
                                placeholder="dd-MM-yyyy" pattern="\d{2}-\d{2}-\d{4}"
-                               th:field="*{fechaNacimiento}" required />
-
+                               th:field="*{fechaNacimiento}" required/>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" onclick="console.log('Botón presionado')">Crear Usuario</button>
+                        <button type="submit" class="btn btn-primary">Crear
+                            Usuario
+                        </button>
                     </div>
                 </form>
             </div>
@@ -79,6 +82,54 @@
             </div>
             <div class="modal-body">
                 <p>Aquí puedes modificar un usuario existente.</p>
+                <form method="post"  th:action="@{/admin/modUser}" th:object="${registroData}">
+                    <div class="mb-3">
+                        <label for="emailModUsuario" class="form-label">Correo Electrónico</label>
+                        <input class="form-control" id="emailModUsuario" placeholder="Ingrese su correo"
+                               type="text" th:field="*{email}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombreModUsuario" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombreModUsuario" placeholder="Ingrese su nombre"
+                               th:field="*{nombre}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="passwordModUsuario" class="form-label">Contraseña</label>
+                        <input class="form-control" id="passwordModUsuario" placeholder="Ingrese su contraseña"
+                               type="password" th:field="*{password}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaModNacimiento" class="form-label">Fecha de nacimiento</label>
+                        <input class="form-control" id="fechaModNacimiento" type="text"
+                               placeholder="dd-MM-yyyy" pattern="\d{2}-\d{2}-\d{4}"
+                               th:field="*{fechaNacimiento}" required/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            Modificar Usuario
+                        </button>
+                    </div>
+                </form>
+                <form  method="get"  th:action="@{/admin}">
+                    <p th:text="${usuarios}"></p>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="usuario : ${usuarios}">
+                                <td th:text="${usuario.id}"></td>
+                                <td th:text="${usuario.nombre}"></td>
+                                <td th:text="${usuario.email}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
             </div>
         </div>
     </div>
@@ -149,6 +200,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const fechaInput = document.getElementById("fechaNacimiento");
+        const fechaInputModUs = document.getElementById("fechaModNacimiento");
 
         fechaInput.addEventListener("input", function (event) {
             let value = fechaInput.value.replace(/\D/g, ""); // Elimina caracteres no numéricos
@@ -165,6 +217,23 @@
             }
 
             fechaInput.value = formattedValue;
+        });
+
+        fechaInputModUs.addEventListener("input", function (event) {
+            let value = fechaInputModUs.value.replace(/\D/g, ""); // Elimina caracteres no numéricos
+            let formattedValue = "";
+
+            if (value.length > 0) {
+                formattedValue += value.substring(0, 2); // Día
+            }
+            if (value.length > 2) {
+                formattedValue += "-" + value.substring(2, 4); // Mes
+            }
+            if (value.length > 4) {
+                formattedValue += "-" + value.substring(4, 8); // Año
+            }
+
+            fechaInputModUs.value = formattedValue;
         });
     });
 </script>

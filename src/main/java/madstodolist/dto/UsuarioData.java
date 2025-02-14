@@ -18,6 +18,18 @@ public class UsuarioData {
 
     // Getters y setters
 
+    public UsuarioData() {
+    }
+
+    public UsuarioData(Long id, String email, String password, String nombre, Date fechaNacimiento, Boolean administrador) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.nombre = nombre;
+        this.fechaNacimiento = fechaNacimiento;
+        this.administrador = administrador;
+    }
+
     public Boolean getAdministrador() {
         return administrador;
     }
