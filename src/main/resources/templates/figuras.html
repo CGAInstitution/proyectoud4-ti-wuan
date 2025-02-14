@@ -61,11 +61,13 @@
     <div class="row">
         <div class="col-md-4" th:each="producto : ${productos}">
             <div class="card text-center">
-                <img th:src="${producto.imagen}" class="card-img-top h-75" alt="Producto">
+                <!-- Asegúrate de que la URL de la imagen esté bien configurada -->
+                <img th:src="${producto.imagenUrl}" class="card-img-top h-75" alt="Producto">
                 <div class="card-body text-white">
                     <h5 class="card-title" th:text="${producto.nombre}">Nombre del Producto</h5>
                     <p class="card-text" th:text="${producto.descripcion}">Descripción del producto.</p>
-                    <button class="btn btn-primary">Comprar</button>
+                    <!-- Botón de comprar que envía la solicitud al controlador con el ID del producto -->
+                    <a th:href="@{/Tienda/AgregarAlCarrito?productoId={id}(id=${producto.id})}" class="btn btn-primary">Comprar</a>
                 </div>
             </div>
         </div>

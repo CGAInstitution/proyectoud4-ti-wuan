@@ -26,8 +26,11 @@ public class CarritoController {
     }
 
     @GetMapping
-    public String mostrarCarrito( Model model) {
-        List<Producto> carrito = productoService.obtenerProductos();
+    public String mostrarCarrito(HttpSession session, Model model) {
+        List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
+        if (carrito == null) {
+            carrito = new ArrayList<>();
+        }
         double total = carrito.stream().mapToDouble(Producto::getPrecio).sum();
 
         model.addAttribute("carrito", carrito);
@@ -37,7 +40,7 @@ public class CarritoController {
 
     @GetMapping("/agregar/{id}")
     public String agregarAlCarrito(@PathVariable Long id, HttpSession session) {
-        List<Producto> carrito = productoService.obtenerProductos();
+        List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
         if (carrito == null) {
             carrito = new ArrayList<>();
         }
@@ -46,20 +49,35 @@ public class CarritoController {
         productoOpt.ifPresent(carrito::add);
 
         session.setAttribute("carrito", carrito);
-        return "cesta";
+        return "redirect:/Tienda/Cesta";
     }
 
     @GetMapping("/eliminar/{id}")
-    public String eliminarDelCarrito(@PathVariable(value = "id") Long id, Model model) {
-        List<Producto> carrito = productoService.obtenerProductos();
-        if (carrito != null) {
-            carrito.removeIf(producto -> producto.getId().equals(id));
+    public String eliminarDelCarrito(@PathVariable Long id, HttpSession session) {
+        List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
+
+        if (carrito != null && !carrito.isEmpty()) {
+            // Buscar el primer producto con el id igual al que se pasa como parámetro
+            Producto productoAEliminar = null;
+            for (Producto producto : carrito) {
+                if (producto.getId().equals(id)) {
+                    productoAEliminar = producto;
+                    break; // Solo eliminar la primera ocurrencia
+                }
+            }
+
+            // Si se encontró un producto a eliminar, lo eliminamos
+            if (productoAEliminar != null) {
+                carrito.remove(productoAEliminar);
+            }
         }
-        double total = carrito.stream().mapToDouble(Producto::getPrecio).sum();
-        model.addAttribute("carrito", carrito);
-        model.addAttribute("total", total);
-        return "cesta";
+
+        session.setAttribute("carrito", carrito);
+        return "redirect:/Tienda/Cesta";
     }
+
+
+
 
     @GetMapping("/checkout")
     public String finalizarCompra(HttpSession session) {

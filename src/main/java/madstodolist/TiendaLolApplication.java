@@ -7,6 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +40,7 @@ public class TiendaLolApplication {
 
             // 2️⃣ Crear una categoría
             Categoria categoria = new Categoria();
-            categoria.setNombre("Figuras de colección");
+            categoria.setNombre("Figuras");
             categoria.setDescripcion("Figuras de personajes de League of Legends.");
             categoriaRepo.save(categoria);
 
@@ -75,7 +77,7 @@ public class TiendaLolApplication {
             pedidoRepo.save(pedido2);
 
             // 5️⃣ Asociar pedidos con productos
-            pedidoProductoRepo.save(new PedidoProducto(1L,pedido, producto, 2));
+            pedidoProductoRepo.save(new PedidoProducto(1L, pedido, producto, 2));
             pedidoProductoRepo.save(new PedidoProducto(2L, pedido, producto2, 1));
             pedidoProductoRepo.save(new PedidoProducto(3L, pedido2, producto2, 3));
             pedidoProductoRepo.save(new PedidoProducto(4L, pedido2, producto, 4));
@@ -95,8 +97,30 @@ public class TiendaLolApplication {
             System.out.println("Total Pedido 1: " + pedidoRepo.findById(pedido.getId()).get().getTotal());
             System.out.println("Total Pedido 2: " + pedidoRepo.findById(pedido2.getId()).get().getTotal());
 
+            // Validación adicional para comprobar eliminación de productos del carrito
+
+            // Simular un carrito
+            List<Producto> carrito = new ArrayList<>();
+            carrito.add(producto);
+            carrito.add(producto2);
+
+            // Mostrar el carrito antes de eliminar
+            System.out.println("Carrito antes de eliminar:");
+            carrito.forEach(p -> System.out.println(p.getNombre()));
+
+            // Eliminar un producto del carrito
+            Long idAEliminar = producto.getId(); // Eliminar la "Figura de Ahri"
+            carrito.removeIf(p -> p.getId().equals(idAEliminar));
+
+            // Mostrar el carrito después de eliminar
+            System.out.println("Carrito después de eliminar:");
+            carrito.forEach(p -> System.out.println(p.getNombre()));
+
+            // ✅ Validar el tamaño de la lista de productos
+            System.out.println("Total productos en BD: " + productoRepo.count());
             List<Producto> productos = productoRepo.findAll();
             System.out.println("Productos en BD:" + productos.size());
         };
     }
+
 }
