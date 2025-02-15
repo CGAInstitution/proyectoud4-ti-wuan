@@ -20,7 +20,7 @@ public class FigurasController {
 
     @GetMapping("/Tienda/Figuras")
     public String mostrarFiguras(HttpSession session, Model model) {
-        // Obtener todos los productos de la categoría "Figuras de colección"
+        // Obtener todos los productos de la categoría "Figuras"
         List<Producto> productos = productoRepo.findByCategoria_Nombre("Figuras");
 
         // Pasar los productos al modelo
@@ -32,8 +32,8 @@ public class FigurasController {
         return "figuras";
     }
 
-    @GetMapping("/Tienda/AgregarAlCarrito")
-    public String agregarAlCarrito(@RequestParam("productoId") Long productoId, HttpSession session, Model model) {
+    @GetMapping("/Tienda/Figuras/AgregarAlCarrito")
+    public String agregarAlCarrito(@RequestParam("productoId") Long productoId, HttpSession session) {
         // Buscar el producto por ID
         Producto producto = productoRepo.findById(productoId).orElse(null);
 
@@ -45,10 +45,9 @@ public class FigurasController {
             if (carrito == null) {
                 carrito = new ArrayList<>();
             }
-            System.out.println(carrito);
+
             // Agregar el producto al carrito
             carrito.add(producto);
-            System.out.println(carrito);
 
             // Guardar el carrito actualizado en la sesión
             session.setAttribute("carrito", carrito);

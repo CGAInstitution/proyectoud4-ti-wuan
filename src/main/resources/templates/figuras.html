@@ -67,7 +67,7 @@
                     <h5 class="card-title" th:text="${producto.nombre}">Nombre del Producto</h5>
                     <p class="card-text" th:text="${producto.descripcion}">Descripción del producto.</p>
                     <!-- Botón de comprar que envía la solicitud al controlador con el ID del producto -->
-                    <a th:href="@{/Tienda/AgregarAlCarrito?productoId={id}(id=${producto.id})}" class="btn btn-primary">Comprar</a>
+                    <a th:href="@{/Tienda/Figuras/AgregarAlCarrito(productoId=${producto.id})}" class="btn btn-primary">Comprar</a>
                 </div>
             </div>
         </div>

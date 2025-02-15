@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Categoría - Tienda LoL</title>
+    <title>Camisetas - Tienda LoL</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -24,15 +24,18 @@
         .card {
             background-color: #111;
             border: 1px solid #C89B3C;
-            margin: 20px;
+            margin: 20px 0;
         }
         .footer {
             background-color: #1A1A2E;
             padding: 20px;
             text-align: center;
-            position: relative;
             width: 100%;
-            bottom: 0;
+            position: relative;
+        }
+        .card-img-top {
+            max-height: 250px;
+            object-fit: cover;
         }
     </style>
 </head>
@@ -53,19 +56,19 @@
 </nav>
 
 <header class="container text-center my-5">
-    <h1 th:text="${categoria}">Categoría</h1>
-    <p>Explora nuestra selección de productos de esta categoría.</p>
+    <h1>Camisetas</h1>
+    <p>Explora nuestra selección de camisetas exclusivas.</p>
 </header>
 
 <div class="container">
     <div class="row">
         <div class="col-md-4" th:each="producto : ${productos}">
             <div class="card text-center">
-                <img th:src="${producto.imagen}" class="card-img-top h-75" alt="Producto">
-                <div class="card-body text-white">
+                <img th:src="${producto.imagenUrl}" class="card-img-top h-75" alt="Producto">
+                <div class="card-body">
                     <h5 class="card-title" th:text="${producto.nombre}">Nombre del Producto</h5>
                     <p class="card-text" th:text="${producto.descripcion}">Descripción del producto.</p>
-                    <button class="btn btn-primary">Comprar</button>
+                    <a th:href="@{/Tienda/Camisetas/AgregarAlCarrito(productoId=${producto.id})}" class="btn btn-primary">Comprar</a>
                 </div>
             </div>
         </div>

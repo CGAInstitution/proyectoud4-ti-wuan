@@ -44,6 +44,16 @@ public class TiendaLolApplication {
             categoria.setDescripcion("Figuras de personajes de League of Legends.");
             categoriaRepo.save(categoria);
 
+            Categoria categoria2 = new Categoria();
+            categoria2.setNombre("Camisetas");
+            categoria2.setDescripcion("Camisetas de personajes de League of Legends.");
+            categoriaRepo.save(categoria2);
+
+            Categoria categoria3 = new Categoria();
+            categoria3.setNombre("Teclados");
+            categoria3.setDescripcion("Teclados de League of Legends.");
+            categoriaRepo.save(categoria3);
+
             // 3️⃣ Crear productos
             Producto producto = new Producto();
             producto.setNombre("Figura de Ahri");
@@ -60,6 +70,39 @@ public class TiendaLolApplication {
             producto2.setImagenUrl("https://example.com/yasuo.jpg");
             producto2.setCategoria(categoria);
             productoRepo.save(producto2);
+
+            Producto producto3 = new Producto();
+            producto3.setNombre("Camiseta de Jinx");
+            producto3.setDescripcion("Camiseta de Jinx, personaje de 'League of Legends'.");
+            producto3.setPrecio(19.99);
+            producto3.setImagenUrl("https://example.com/jinx.jpg");
+            producto3.setCategoria(categoria2);
+            productoRepo.save(producto3);
+
+            Producto producto4 = new Producto();
+            producto4.setNombre("Camiseta de Teemo");
+            producto4.setDescripcion("Camiseta de Teemo, personaje de 'League of Legends'.");
+            producto4.setPrecio(19.99);
+            producto4.setImagenUrl("https://example.com/teemo.jpg");
+            producto4.setCategoria(categoria2);
+            productoRepo.save(producto4);
+
+            Producto producto5 = new Producto();
+            producto5.setNombre("Teclado de Yasuo");
+            producto5.setDescripcion("Teclado de Yasuo, personaje de 'League of Legends'.");
+            producto5.setPrecio(99.99);
+            producto5.setImagenUrl("https://example.com/yasuo-teclado.jpg");
+            producto5.setCategoria(categoria3);
+            productoRepo.save(producto5);
+
+            Producto producto6 = new Producto();
+            producto6.setNombre("Teclado de Jinx");
+            producto6.setDescripcion("Teclado de Jinx, personaje de 'League of Legends'.");
+            producto6.setPrecio(99.99);
+            producto6.setImagenUrl("https://example.com/jinx-teclado.jpg");
+            producto6.setCategoria(categoria3);
+            productoRepo.save(producto6);
+
 
             // 4️⃣ Crear pedidos
             Pedido pedido = new Pedido();
