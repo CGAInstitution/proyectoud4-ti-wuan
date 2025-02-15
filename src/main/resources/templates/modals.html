@@ -81,7 +81,7 @@
                 <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <p>Aquí puedes modificar un usuario existente.</p>
+                <p>Aquí puedes modificar un usuario existente a través del email.</p>
                 <form method="post"  th:action="@{/admin/modUser}" th:object="${registroData}">
                     <div class="mb-3">
                         <label for="emailModUsuario" class="form-label">Correo Electrónico</label>
@@ -233,7 +233,58 @@
                 <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <p>Aquí puedes modificar un producto existente.</p>
+                <p>Aquí puedes modificar un producto existente a través del nombre.</p>
+                <form method="post" th:action="@{/admin/modProduct}" th:object="${productoData}">
+                    <div class="mb-3">
+                        <label for="nameModProduc" class="form-label">Nombre del producto</label>
+                        <input class="form-control" id="nameModProduc" placeholder="Ingrese nombre del prodcuto"
+                               type="text" th:field="*{nombre}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descModProduc" class="form-label">Descripcion</label>
+                        <input type="text" class="form-control" id="descModProduc" placeholder="Ingrese descripcion del producto"
+                               th:field="*{descripcion}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="priceModProduc" class="form-label">Precio del producto</label>
+                        <input class="form-control" id="priceModProduc" placeholder="Ingrese precio del producto"
+                               type="text" th:field="*{precio}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="imageModProduc" class="form-label">Imagen</label>
+                        <input class="form-control" id="imageModProduc" type="text"
+                               placeholder="Introduce la imagen" th:field="*{imagenUrl}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="CategoriaModproduc" class="form-label">Id de la categoria</label>
+                        <input class="form-control" id="CategoriaModproduc" type="text"
+                               placeholder="Introduce la categoria" th:field="*{categoriaId}" required/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Modificar Producto</button>
+                    </div>
+                </form>
+                <form  method="get"  th:action="@{/admin}">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Id Categoria</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="producto : ${productos}">
+                            <td th:text="${producto.id}"></td>
+                            <td th:text="${producto.nombre}"></td>
+                            <td th:text="${producto.precio}"></td>
+                            <td th:text="${producto.categoriaId}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
             </div>
         </div>
     </div>
@@ -248,7 +299,7 @@
                 <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <p>Aquí puedes eliminar un producto existente.</p>
+                <p>Aquí puedes eliminar un producto existente a través del id.</p>
                 <form method="post" th:action="@{/admin/delProduct}" th:object="${productoData}">
                     <div class="mb-3">
                         <label for="idProductoDel" class="form-label">Id del producto</label>
@@ -267,6 +318,7 @@
                             <th>ID</th>
                             <th>Nombre</th>
                             <th>Precio</th>
+                            <th>Id Categoria</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -274,6 +326,7 @@
                             <td th:text="${producto.id}"></td>
                             <td th:text="${producto.nombre}"></td>
                             <td th:text="${producto.precio}"></td>
+                            <td th:text="${producto.categoriaId}"></td>
                         </tr>
                         </tbody>
                     </table>

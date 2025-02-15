@@ -137,4 +137,19 @@ public class AdminController {
         productoService.addProduct(productoData, categoria);
         return "redirect:/admin";
     }
+
+    @PostMapping("/admin/modProduct")
+    public String modProduct(@Valid ProductoData productoData, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors() || productoData.getNombre().isEmpty() || productoData.getDescripcion().isEmpty() ||
+                productoData.getPrecio() == null || productoData.getCategoriaId() == null) {
+            model.addAttribute("errorMessage", "Errores en el formulario. Por favor, corrige los campos marcados y asegúrate de que todos los campos estén llenos.");
+
+            model.addAttribute("productoData", productoData);
+        }
+
+        CategoriaData categoria = categoriaService.findById(productoData.getCategoriaId());
+
+        productoService.modProduct(productoData, categoria);
+        return "redirect:/admin";
+    }
 }

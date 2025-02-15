@@ -61,4 +61,24 @@ public class ProductoService {
             return null;
         }
     }
+
+    public ProductoData modProduct(ProductoData productoData, CategoriaData categoriaData) {
+        try {
+            Optional<Producto> producto = productoRepository.findByNombre(productoData.getNombre());
+            if (producto.isPresent()) {
+                producto.get().setNombre(productoData.getNombre());
+                producto.get().setDescripcion(productoData.getDescripcion());
+                producto.get().setPrecio(productoData.getPrecio());
+                producto.get().setImagenUrl(productoData.getImagenUrl());
+                Categoria categoria = new Categoria();
+                categoria.setId(categoriaData.getId());
+                producto.get().setCategoria(categoria);
+                productoRepository.save(producto.get());
+            }
+            return productoData;
+        }catch (Exception e){
+            System.out.println("Error al modificar el producto");
+            return null;
+        }
+    }
 }
