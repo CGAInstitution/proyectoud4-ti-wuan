@@ -17,9 +17,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.List;
 
@@ -124,27 +131,67 @@ public class AdminController {
     }
 
     @PostMapping("/admin/addProduct")
-    public String addProduct(@Valid ProductoData productoData, BindingResult bindingResult, Model model) {
+    public String addProduct(@Valid ProductoData productoData,
+                             @RequestParam("imagen") MultipartFile imagen,
+                             BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors() || productoData.getNombre().isEmpty() || productoData.getDescripcion().isEmpty() ||
                 productoData.getPrecio() == null || productoData.getCategoriaId() == null) {
-            model.addAttribute("errorMessage", "Errores en el formulario. Por favor, corrige los campos marcados y asegúrate de que todos los campos estén llenos.");
-
+            model.addAttribute("errorMessage", "Errores en el formulario. Por favor, corrige los campos.");
             model.addAttribute("productoData", productoData);
+            return "admin"; // Retorna a la página del formulario
+        }
+
+        try {
+            if (!imagen.isEmpty()) {
+                // Ruta donde se guardará la imagen
+                String uploadDir = "src/main/resources/static/img/";
+                String fileName = imagen.getOriginalFilename();
+
+                // Guardar la imagen en la carpeta del servidor
+                Path filePath = Paths.get(uploadDir + fileName);
+                Files.copy(imagen.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+                // Establecer la URL de la imagen en el objeto ProductoData
+                productoData.setImagenUrl("/img/" + fileName);
+            }
+        } catch (IOException e) {
+            model.addAttribute("errorMessage", "Error al guardar la imagen.");
+            return "admin";
         }
 
         CategoriaData categoria = categoriaService.findById(productoData.getCategoriaId());
-
         productoService.addProduct(productoData, categoria);
+
         return "redirect:/admin";
     }
 
+
     @PostMapping("/admin/modProduct")
-    public String modProduct(@Valid ProductoData productoData, BindingResult bindingResult, Model model) {
+    public String modProduct(@Valid ProductoData productoData,
+                             @RequestParam("imagen") MultipartFile imagen,
+                             BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors() || productoData.getNombre().isEmpty() || productoData.getDescripcion().isEmpty() ||
                 productoData.getPrecio() == null || productoData.getCategoriaId() == null) {
-            model.addAttribute("errorMessage", "Errores en el formulario. Por favor, corrige los campos marcados y asegúrate de que todos los campos estén llenos.");
-
+            model.addAttribute("errorMessage", "Errores en el formulario. Por favor, corrige los campos.");
             model.addAttribute("productoData", productoData);
+            return "admin"; // Retorna a la página del formulario
+        }
+        try {
+            if (!imagen.isEmpty()) {
+                // Ruta donde se guardará la imagen
+                String uploadDir = "src/main/resources/static/img/";
+                String fileName = imagen.getOriginalFilename();
+
+                // Guardar la imagen en la carpeta del servidor
+                Path filePath = Paths.get(uploadDir + fileName);
+                Files.copy(imagen.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+                // Establecer la URL de la imagen en el objeto ProductoData
+                productoData.setImagenUrl("/img/" + fileName);
+            }
+        } catch (IOException e) {
+            model.addAttribute("errorMessage", "Error al guardar la imagen.");
+            return "admin";
         }
 
         CategoriaData categoria = categoriaService.findById(productoData.getCategoriaId());

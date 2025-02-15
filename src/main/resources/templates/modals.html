@@ -194,15 +194,15 @@
             <div class="modal-body">
                 <p>Aquí puedes crear un nuevo producto.</p>
             </div>
-            <form method="post" th:action="@{/admin/addProduct}" th:object="${productoData}">
+            <form method="post" th:action="@{/admin/addProduct}" th:object="${productoData}" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="nameAddProduc" class="form-label">Nombre del producto</label>
-                    <input class="form-control" id="nameAddProduc" placeholder="Ingrese nombre del prodcuto"
+                    <input class="form-control" id="nameAddProduc" placeholder="Ingrese nombre del producto"
                            type="text" th:field="*{nombre}" required/>
                 </div>
                 <div class="mb-3">
                     <label for="descAddProduc" class="form-label">Descripcion</label>
-                    <input type="text" class="form-control" id="descAddProduc" placeholder="Ingrese descripcion del producto"
+                    <input type="text" class="form-control" id="descAddProduc" placeholder="Ingrese descripción del producto"
                            th:field="*{descripcion}" required/>
                 </div>
                 <div class="mb-3">
@@ -212,13 +212,12 @@
                 </div>
                 <div class="mb-3">
                     <label for="imageAddProduc" class="form-label">Imagen</label>
-                    <input class="form-control" id="imageAddProduc" type="text"
-                           placeholder="Introduce la imagen" th:field="*{imagenUrl}" required/>
+                    <input class="form-control" id="imageAddProduc" type="file" name="imagen" accept="image/*" required/>
                 </div>
                 <div class="mb-3">
-                    <label for="CategoriaAddproduc" class="form-label">Id de la categoria</label>
+                    <label for="CategoriaAddproduc" class="form-label">Id de la categoría</label>
                     <input class="form-control" id="CategoriaAddproduc" type="text"
-                           placeholder="Introduce la categoria" th:field="*{categoriaId}" required/>
+                           placeholder="Introduce la categoría" th:field="*{categoriaId}" required/>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -239,7 +238,7 @@
             </div>
             <div class="modal-body">
                 <p>Aquí puedes modificar un producto existente a través del nombre.</p>
-                <form method="post" th:action="@{/admin/modProduct}" th:object="${productoData}">
+                <form method="post" th:action="@{/admin/modProduct}" th:object="${productoData}"  enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="nameModProduc" class="form-label">Nombre del producto</label>
                         <input class="form-control" id="nameModProduc" placeholder="Ingrese nombre del prodcuto"
@@ -257,8 +256,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="imageModProduc" class="form-label">Imagen</label>
-                        <input class="form-control" id="imageModProduc" type="text"
-                               placeholder="Introduce la imagen" th:field="*{imagenUrl}" required/>
+                        <input class="form-control" id="imageModProduc" type="file" name="imagen" accept="image/*" required/>
                     </div>
                     <div class="mb-3">
                         <label for="CategoriaModproduc" class="form-label">Id de la categoria</label>
