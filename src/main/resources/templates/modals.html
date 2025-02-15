@@ -218,6 +218,35 @@
             </div>
             <div class="modal-body">
                 <p>Aquí puedes eliminar un producto existente.</p>
+                <form method="post" th:action="@{/admin/delProduct}" th:object="${productoData}">
+                    <div class="mb-3">
+                        <label for="idProductoDel" class="form-label">Id del producto</label>
+                        <input class="form-control" id="idProductoDel" placeholder="Ingrese ID del producto"
+                               type="text" th:field="*{id}" required/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar Producto</button>
+                    </div>
+                </form>
+                <form  method="get"  th:action="@{/admin}">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="producto : ${productos}">
+                            <td th:text="${producto.id}"></td>
+                            <td th:text="${producto.nombre}"></td>
+                            <td th:text="${producto.precio}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
             </div>
         </div>
     </div>
