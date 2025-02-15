@@ -1,6 +1,8 @@
 package madstodolist.service;
 
+import madstodolist.dto.CategoriaData;
 import madstodolist.dto.ProductoData;
+import madstodolist.model.Categoria;
 import madstodolist.model.Producto;
 import madstodolist.repository.ProductoRepository;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,24 @@ public class ProductoService {
             }
         }catch (Exception e){
             System.out.println("Error al borrar el producto");
+        }
+    }
+
+    public ProductoData addProduct(ProductoData productoData, CategoriaData categoriaData) {
+        try {
+            Producto producto = new Producto();
+            producto.setNombre(productoData.getNombre());
+            producto.setDescripcion(productoData.getDescripcion());
+            producto.setPrecio(productoData.getPrecio());
+            producto.setImagenUrl(productoData.getImagenUrl());
+            Categoria categoria = new Categoria();
+            categoria.setId(categoriaData.getId());
+            producto.setCategoria(categoria);
+            productoRepository.save(producto);
+            return productoData;
+        }catch (Exception e){
+            System.out.println("Error al añadir el producto");
+            return null;
         }
     }
 }

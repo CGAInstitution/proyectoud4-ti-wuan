@@ -189,6 +189,37 @@
             <div class="modal-body">
                 <p>Aquí puedes crear un nuevo producto.</p>
             </div>
+            <form method="post" th:action="@{/admin/addProduct}" th:object="${productoData}">
+                <div class="mb-3">
+                    <label for="nameAddProduc" class="form-label">Nombre del producto</label>
+                    <input class="form-control" id="nameAddProduc" placeholder="Ingrese nombre del prodcuto"
+                           type="text" th:field="*{nombre}" required/>
+                </div>
+                <div class="mb-3">
+                    <label for="descAddProduc" class="form-label">Descripcion</label>
+                    <input type="text" class="form-control" id="descAddProduc" placeholder="Ingrese descripcion del producto"
+                           th:field="*{descripcion}" required/>
+                </div>
+                <div class="mb-3">
+                    <label for="priceAddProduc" class="form-label">Precio del producto</label>
+                    <input class="form-control" id="priceAddProduc" placeholder="Ingrese precio del producto"
+                           type="text" th:field="*{precio}" required/>
+                </div>
+                <div class="mb-3">
+                    <label for="imageAddProduc" class="form-label">Imagen</label>
+                    <input class="form-control" id="imageAddProduc" type="text"
+                           placeholder="Introduce la imagen" th:field="*{imagenUrl}" required/>
+                </div>
+                <div class="mb-3">
+                    <label for="CategoriaAddproduc" class="form-label">Id de la categoria</label>
+                    <input class="form-control" id="CategoriaAddproduc" type="text"
+                           placeholder="Introduce la categoria" th:field="*{categoriaId}" required/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Crear Producto</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

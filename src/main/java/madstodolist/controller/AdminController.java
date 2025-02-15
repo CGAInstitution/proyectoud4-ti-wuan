@@ -1,8 +1,12 @@
 package madstodolist.controller;
 
+import madstodolist.dto.CategoriaData;
 import madstodolist.dto.ProductoData;
 import madstodolist.dto.RegistroData;
 import madstodolist.dto.UsuarioData;
+import madstodolist.model.Categoria;
+import madstodolist.model.Producto;
+import madstodolist.service.CategoriaService;
 import madstodolist.service.ProductoService;
 import madstodolist.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,9 @@ public class AdminController {
 
     @Autowired
     ProductoService productoService;
+
+    @Autowired
+    private CategoriaService categoriaService;
 
     @GetMapping("/admin")
     public String mostrarTienda(HttpSession session, Model model) {
@@ -113,6 +120,21 @@ public class AdminController {
         }
 
         productoService.deleteProduct(productoData.getId());
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/admin/addProduct")
+    public String addProduct(@Valid ProductoData productoData, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors() || productoData.getNombre().isEmpty() || productoData.getDescripcion().isEmpty() ||
+                productoData.getPrecio() == null || productoData.getCategoriaId() == null) {
+            model.addAttribute("errorMessage", "Errores en el formulario. Por favor, corrige los campos marcados y asegúrate de que todos los campos estén llenos.");
+
+            model.addAttribute("productoData", productoData);
+        }
+
+        CategoriaData categoria = categoriaService.findById(productoData.getCategoriaId());
+
+        productoService.addProduct(productoData, categoria);
         return "redirect:/admin";
     }
 }
