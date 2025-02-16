@@ -16,16 +16,6 @@
             flex-direction: column;
         }
 
-        .numItems-text{
-            position: absolute;
-            right: 15px;
-            padding: 15px;
-            margin: 20px;
-            top: 36px;
-            font-weight: bold;
-            z-index: 5;"
-        }
-
         .navbar {
             background-color: #1A1A2E;
         }
@@ -46,14 +36,6 @@
             margin: 20px;
         }
 
-        .cart-button {
-            position: absolute;
-            right: 5px;
-            padding: 15px;
-            margin: 20px;
-            top: 50px;
-        }
-
         .footer {
             background-color: #1A1A2E;
             padding: 20px;
@@ -61,6 +43,22 @@
             width: 100%;
             position: relative;
             margin-top: auto;
+        }
+
+        .cart-container {
+            position: relative;
+        }
+
+        .numItems-text {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -76,18 +74,18 @@
                 <li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
                 <li class="nav-item"><a class="nav-link" href="/Tienda/Perfil">Perfil</a></li>
                 <li class="nav-item"><a class="nav-link" href="/">Salir</a></li>
-
+                <li class="nav-item">
+                    <div class="cart-container">
+                        <a class="btn btn-primary" th:href="@{/Tienda/Cesta}">Cesta 🛒</a>
+                        <span class="numItems-text">0</span>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
 
 <header class="container text-center my-5">
-    <div>
-        <span class="numItems-text">0</span>
-        <a class="cart-button btn btn-primary" th:href="@{/Tienda/Cesta}">Cesta 🛒</a>
-    </div>
-
     <h1>Bienvenido a la tienda de League of Legends</h1>
     <p>Encuentra los mejores artículos inspirados en el universo de LoL.</p>
 </header>
