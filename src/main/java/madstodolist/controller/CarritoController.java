@@ -90,10 +90,10 @@ public class CarritoController {
         pedidoData.setTotal(carrito.stream().mapToDouble(Producto::getPrecio).sum());
         pedidoData.setPedidos(carrito);
 
-        // Crear objeto DetallePedido con dirección y método de pago
+        // Crear objeto DetallePedido con dirección y metodo de pago
         DetallePedido detalle = new DetallePedido();
         detalle.setDireccionEnvio(direccion);
-        detalle.setMetodoPago(DetallePedido.MetodoPago.valueOf(metodoPago));
+        detalle.setMetodoPago(DetallePedido.MetodoPago.fromString(metodoPago.toUpperCase()));
         pedidoData.setDetallePedido(detalle);
 
         // Guardar pedido

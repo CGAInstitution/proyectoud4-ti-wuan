@@ -88,6 +88,7 @@ public class PedidoService {
 
         // Guardar el pedido con sus relaciones
         pedidoRepository.save(nuevoPedido);
+        pedidoRepository.flush();
     }
 
 }
