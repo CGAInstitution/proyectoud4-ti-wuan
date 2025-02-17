@@ -31,6 +31,7 @@ public class CarritoController {
 
     @GetMapping
     public String mostrarCarrito(HttpSession session, Model model) {
+        session.getAttribute("userId");
         List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
         if (carrito == null) {
             carrito = new ArrayList<>();
@@ -71,7 +72,9 @@ public class CarritoController {
                                   Model model,
                                   HttpSession session) {
         List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
-        Long usuarioId = (Long) session.getAttribute("usuarioId");
+        System.out.println("Carrito: " + carrito);
+        Long usuarioId = (Long) session.getAttribute("userId");
+        System.out.println("UsuarioId: " + usuarioId);
 
         if (carrito == null || carrito.isEmpty()) {
             model.addAttribute("mensaje", "El carrito está vacío.");
@@ -95,7 +98,7 @@ public class CarritoController {
         detalle.setDireccionEnvio(direccion);
         detalle.setMetodoPago(DetallePedido.MetodoPago.fromString(metodoPago.toUpperCase()));
         pedidoData.setDetallePedido(detalle);
-
+        System.out.println("PedidoData: " + pedidoData);
         // Guardar pedido
         pedidoService.crearPedido(pedidoData, usuarioId);
 
