@@ -91,6 +91,7 @@ public class LoginController {
         usuario.setPassword(registroData.getPassword());
         usuario.setFechaNacimiento(registroData.getFechaNacimiento());
         usuario.setNombre(registroData.getNombre());
+        usuario.setAdministrador(false);
 
         usuarioService.registrar(usuario);
         return "redirect:/login";
