@@ -133,7 +133,7 @@ public class TiendaLolApplication {
 
             // 7️⃣ Insertar productos en el inventario
             inventarioRepo.save(new Inventario(producto, 3)); // Figura de Ahri
-            inventarioRepo.save(new Inventario(producto2, 150)); // Figura de Yasuo
+            inventarioRepo.save(new Inventario(producto2, 2)); // Figura de Yasuo
             inventarioRepo.save(new Inventario(producto3, 200)); // Camiseta de Jinx
             inventarioRepo.save(new Inventario(producto4, 180)); // Camiseta de Teemo
             inventarioRepo.save(new Inventario(producto5, 50));  // Teclado de Yasuo
