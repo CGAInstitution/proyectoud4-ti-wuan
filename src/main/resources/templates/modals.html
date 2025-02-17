@@ -219,10 +219,31 @@
                     <input class="form-control" id="CategoriaAddproduc" type="text"
                            placeholder="Introduce la categoría" th:field="*{categoriaId}" required/>
                 </div>
+                <div class="mb-3">
+                    <label for="StockAddproduc" class="form-label">Cantidad de stock</label>
+                    <input class="form-control" id="StockAddproduc" type="text"
+                           placeholder="Introduce la categoría" th:field="*{cantidad}" required/>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Crear Producto</button>
                 </div>
+            </form>
+            <form  method="get"  th:action="@{/admin}">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Categoria</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="categoria : ${categorias}">
+                        <td th:text="${categoria.id}"></td>
+                        <td th:text="${categoria.nombre}"></td>
+                    </tr>
+                    </tbody>
+                </table>
             </form>
         </div>
     </div>

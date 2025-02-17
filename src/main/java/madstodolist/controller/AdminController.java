@@ -50,8 +50,10 @@ public class AdminController {
 
         List<UsuarioData> usuarios = usuarioService.findAll();
         List<ProductoData> productos = productoService.findAll();
+        List<CategoriaData> categorias = categoriaService.findAll();
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("productos", productos);
+        model.addAttribute("categorias", categorias);
 
         return "admin";
     }
@@ -161,7 +163,7 @@ public class AdminController {
         }
 
         CategoriaData categoria = categoriaService.findById(productoData.getCategoriaId());
-        productoService.addProduct(productoData, categoria);
+        productoService.addProduct(productoData, categoria, productoData.getCantidad());
 
         return "redirect:/admin";
     }
