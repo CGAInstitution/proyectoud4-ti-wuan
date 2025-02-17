@@ -1,7 +1,6 @@
 package madstodolist.service;
 
 import madstodolist.dto.PedidoData;
-import madstodolist.dto.ProductoData;
 import madstodolist.model.*;
 import madstodolist.repository.CategoriaRepository;
 import madstodolist.repository.PedidoRepository;
@@ -44,30 +43,29 @@ public class PedidoService {
         Usuario usuario = usuarioOpt.get();
 
         List<Producto> productos = pedidoData.getProductos();
-        // Crear el nuevo pedido
         Pedido nuevoPedido = new Pedido();
         nuevoPedido.setFecha(pedidoData.getFecha());
         nuevoPedido.setEstado(pedidoData.getEstado());
         nuevoPedido.setTotal(productos.stream().mapToDouble(Producto::getPrecio).sum());
         nuevoPedido.setUsuario(usuario);
 
-        // Crear y asociar DetallePedido
+
         DetallePedido detalle = new DetallePedido();
         detalle.setPedido(nuevoPedido);
         detalle.setDireccionEnvio(pedidoData.getDetallePedido().getDireccionEnvio());
         detalle.setMetodoPago(pedidoData.getDetallePedido().getMetodoPago());
         nuevoPedido.setDetallePedido(detalle);
 
-        // Agrupar productos por ID y contar su cantidad
+
         Map<Long, Long> conteoProductos = productos.stream()
                 .collect(Collectors.groupingBy(Producto::getId, Collectors.counting()));
 
-        // Crear y asociar los productos a PedidoProducto con la cantidad correcta
+
         List<PedidoProducto> pedidoProductos = conteoProductos.entrySet().stream().map(entry -> {
             Long productoId = entry.getKey();
-            int cantidad = entry.getValue().intValue(); // Convertir Long a int
+            int cantidad = entry.getValue().intValue();
 
-            // Buscar el producto original para obtener todos sus datos
+
             Producto producto = productos.stream()
                     .filter(p -> p.getId().equals(productoId))
                     .findFirst()

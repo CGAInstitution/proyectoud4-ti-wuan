@@ -1,7 +1,7 @@
 package madstodolist.dto;
 
 import madstodolist.model.DetallePedido;
-import madstodolist.model.Pedido;
+
 import madstodolist.model.Pedido.EstadoPedido;
 import madstodolist.model.Producto;
 

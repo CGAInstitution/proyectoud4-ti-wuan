@@ -4,19 +4,19 @@ import madstodolist.dto.CategoriaData;
 import madstodolist.dto.ProductoData;
 import madstodolist.dto.RegistroData;
 import madstodolist.dto.UsuarioData;
-import madstodolist.model.Categoria;
-import madstodolist.model.Producto;
+
+
 import madstodolist.service.CategoriaService;
 import madstodolist.service.ProductoService;
 import madstodolist.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Collections;
+
 import java.util.List;
 
 @Controller
