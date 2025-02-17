@@ -15,6 +15,7 @@ public class PedidoData {
     private DetallePedido detallePedido;
     private List<Producto> productos;
     private double total;
+    private int cantidad;
 
     public PedidoData() {
     }
@@ -26,6 +27,14 @@ public class PedidoData {
         this.detallePedido = detallePedido;
         this.productos = productos;
         this.total = total;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
     public Long getId() {
