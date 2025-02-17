@@ -24,6 +24,8 @@ public class CamisetasController {
         model.addAttribute("productos", productos);
 
         List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
+        session.getAttribute("numeroCesta");
+        model.addAttribute("numeroCesta", carrito.size() < 9 ? carrito.size() : "+9");
         return "camisetas";
     }
 
@@ -37,7 +39,7 @@ public class CamisetasController {
                 carrito = new ArrayList<>();
             }
             carrito.add(producto);
-            session.setAttribute("carrito", carrito);
+
         }
 
         return "redirect:/Tienda/Camisetas";

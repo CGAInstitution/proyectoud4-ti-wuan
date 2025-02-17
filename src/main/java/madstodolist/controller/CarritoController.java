@@ -1,12 +1,10 @@
 package madstodolist.controller;
 
 import madstodolist.dto.PedidoData;
-import madstodolist.dto.ProductoData;
 import madstodolist.model.DetallePedido;
 import madstodolist.model.Pedido;
 import madstodolist.model.Producto;
 import madstodolist.service.PedidoService;
-import madstodolist.service.ProductoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +19,9 @@ import java.util.Optional;
 @RequestMapping("/Tienda/Cesta")
 public class CarritoController {
 
-    private final ProductoService productoService;
     private final PedidoService pedidoService;
 
-    public CarritoController(ProductoService productoService, PedidoService pedidoService) {
-        this.productoService = productoService;
+    public CarritoController(PedidoService pedidoService) {
         this.pedidoService = pedidoService;
     }
 
@@ -37,9 +33,11 @@ public class CarritoController {
             carrito = new ArrayList<>();
         }
         double total = carrito.stream().mapToDouble(Producto::getPrecio).sum();
+        total = Math.round(total * 100.0) / 100.0;
 
         model.addAttribute("carrito", carrito);
         model.addAttribute("total", total);
+
         return "cesta";
     }
 

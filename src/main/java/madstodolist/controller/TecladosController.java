@@ -24,11 +24,13 @@ public class TecladosController {
         model.addAttribute("productos", productos);
 
         List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
+        session.getAttribute("numeroCesta");
+        model.addAttribute("numeroCesta", carrito.size() < 9 ? carrito.size() : "+9");
         return "teclados";
     }
 
     @GetMapping("/Tienda/Teclados/AgregarAlCarrito")
-    public String agregarAlCarrito(@RequestParam("productoId") Long productoId, HttpSession session) {
+    public String agregarAlCarrito(@RequestParam("productoId") Long productoId, HttpSession session, Model model) {
         Producto producto = productoRepo.findById(productoId).orElse(null);
 
         if (producto != null) {

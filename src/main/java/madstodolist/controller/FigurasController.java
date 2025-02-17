@@ -29,6 +29,9 @@ public class FigurasController {
         // Mostrar la cantidad de productos en el carrito
         List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
 
+        session.getAttribute("numeroCesta");
+        model.addAttribute("numeroCesta", carrito.size() < 9 ? carrito.size() : "+9");
+
         return "figuras";
     }
 
@@ -49,8 +52,6 @@ public class FigurasController {
             // Agregar el producto al carrito
             carrito.add(producto);
 
-            // Guardar el carrito actualizado en la sesión
-            session.setAttribute("carrito", carrito);
         }
 
         // Redirigir a la vista de figuras

@@ -70,8 +70,10 @@
                 <li class="nav-item"><a class="nav-link" href="/">Salir</a></li>
                 <li class="nav-item">
                     <div class="cart-container">
-                        <a class="btn btn-primary" th:href="@{/Tienda/Cesta}">Cesta 🛒</a>
-                        <span class="numItems-text">0</span>
+                        <a class="btn btn-primary position-relative" th:href="@{/Tienda/Cesta}">
+                            Cesta 🛒
+                            <span class="numItems-text" th:text="${numeroCesta}">0</span>
+                        </a>
                     </div>
                 </li>
             </ul>
