@@ -1,0 +1,129 @@
+package madstodolist.controller;
+
+import madstodolist.dto.PedidoData;
+import madstodolist.model.DetallePedido;
+import madstodolist.model.Pedido;
+import madstodolist.model.Producto;
+import madstodolist.service.PedidoService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+@Controller
+@RequestMapping("/Tienda/Cesta")
+public class CarritoController {
+
+private final PedidoService pedidoService;
+
+public CarritoController(PedidoService pedidoService) {
+    this.pedidoService = pedidoService;
+}
+
+@GetMapping
+public String mostrarCarrito(HttpSession session, Model model) {
+    session.getAttribute("userId");
+    List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
+    if (carrito == null) {
+        carrito = new ArrayList<>();
+    }
+    double total = carrito.stream().mapToDouble(Producto::getPrecio).sum();
+    total = Math.round(total * 100.0) / 100.0;
+
+    model.addAttribute("carrito", carrito);
+    model.addAttribute("total", total);
+
+    return "cesta";
+}
+
+@GetMapping("/eliminar/{id}")
+public String eliminarDelCarrito(@PathVariable Long id, HttpSession session) {
+    List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
+
+    if (carrito != null && !carrito.isEmpty()) {
+        Producto productoAEliminar = null;
+        for (Producto producto : carrito) {
+            if (producto.getId().equals(id)) {
+                productoAEliminar = producto;
+                break; // Solo eliminar la primera ocurrencia
+            }
+        }
+
+        if (productoAEliminar != null) {
+            carrito.remove(productoAEliminar);
+        }
+    }
+
+    session.setAttribute("carrito", carrito);
+    return "redirect:/Tienda/Cesta";
+}
+
+    @PostMapping("/checkout")
+    public String finalizarCompra(@RequestParam String direccion,
+                                  @RequestParam String metodoPago,
+                                  Model model,
+                                  HttpSession session) {
+        List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
+        Long usuarioId = (Long) session.getAttribute("userId");
+
+        // Verificación del carrito vacío
+        if (carrito == null || carrito.isEmpty()) {
+            model.addAttribute("mensaje", "El carrito está vacío.");
+            return "redirect:/Tienda/Cesta"; // Redirigir a la cesta si está vacío
+        }
+
+        // Verificación de usuario no autenticado
+        if (usuarioId == null) {
+            model.addAttribute("mensaje", "Usuario no autenticado.");
+            return "redirect:/Tienda/Cesta"; // Redirigir a la cesta si no está autenticado
+        }
+
+        // Crear objeto PedidoData
+        PedidoData pedidoData = new PedidoData();
+        pedidoData.setFecha(new Date());
+        pedidoData.setEstado(Pedido.EstadoPedido.PENDIENTE);
+        pedidoData.setTotal(carrito.stream().mapToDouble(Producto::getPrecio).sum());
+        pedidoData.setPedidos(carrito);
+
+        // Crear objeto DetallePedido con dirección y método de pago
+        DetallePedido detalle = new DetallePedido();
+        detalle.setDireccionEnvio(direccion);
+        detalle.setMetodoPago(DetallePedido.MetodoPago.fromString(metodoPago.toUpperCase()));
+        pedidoData.setDetallePedido(detalle);
+
+        // Llamar al servicio para crear el pedido y verificar stock
+        List<String> mensajesDeError = pedidoService.crearPedido(pedidoData, usuarioId);
+
+        // Agrupar los errores por producto para evitar que se repitan
+        List<String> mensajesDeErrorAgrupados = new ArrayList<>();
+        for (String error : mensajesDeError) {
+            // Aquí asumimos que cada error puede tener un identificador de producto, por ejemplo:
+            if (!mensajesDeErrorAgrupados.contains(error)) {
+                mensajesDeErrorAgrupados.add(error);  // Agregar error único
+            }
+        }
+
+        // Si hay errores (por ejemplo, stock insuficiente)
+        if (!mensajesDeErrorAgrupados.isEmpty()) {
+            model.addAttribute("mensajesDeError", mensajesDeErrorAgrupados);
+            model.addAttribute("carrito", carrito); // Mantener el carrito si hay errores
+            model.addAttribute("total", carrito.stream().mapToDouble(Producto::getPrecio).sum());
+            return "cesta"; // Volver a la vista de la cesta
+        }
+
+        // Vaciar el carrito después de la compra exitosa
+        session.removeAttribute("carrito");
+
+        // Confirmación de compra exitosa
+        model.addAttribute("mensajeExito", "Pedido realizado con éxito.");
+
+        // Redirigir a la tienda con el carrito vacío (esto recargará la página)
+        return "redirect:/Tienda";  // Redirigir para que la vista del carrito se actualice
+    }
+
+
+}

@@ -24,7 +24,20 @@ public class DetallePedido {
     // Getters y Setters
 
     public enum MetodoPago {
-        TARJETA, PAYPAL, TRANSFERENCIA
+        TARJETA, PAYPAL, TRANSFERENCIA;
+
+        public static MetodoPago fromString(String metodo) {
+            switch (metodo.toUpperCase()) {
+                case "TARJETA":
+                    return TARJETA;
+                case "PAYPAL":
+                    return PAYPAL;
+                case "TRANSFERENCIA":
+                    return TRANSFERENCIA;
+                default:
+                    throw new IllegalArgumentException("Método de pago no válido: " + metodo);
+            }
+        }
     }
 
     public DetallePedido(Long pedidoId, Pedido pedido, String direccionEnvio, MetodoPago metodoPago) {

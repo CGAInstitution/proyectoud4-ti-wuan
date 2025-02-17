@@ -2,8 +2,7 @@ package madstodolist.controller;
 
 import madstodolist.dto.UsuarioData;
 import madstodolist.model.Pedido;
-import madstodolist.model.Usuario; // Asegúrate de importar tu clase Usuario
-import madstodolist.service.UsuarioService; // Servicio para obtener el usuario
+import madstodolist.service.UsuarioService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

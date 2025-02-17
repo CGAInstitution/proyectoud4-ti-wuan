@@ -1,7 +1,9 @@
 package madstodolist;
 
+import madstodolist.model.Pedido;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootApplication
 public class Application {
@@ -9,3 +11,6 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 }
+
+
+

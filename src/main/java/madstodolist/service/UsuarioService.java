@@ -4,7 +4,7 @@ import madstodolist.dto.UsuarioData;
 import madstodolist.model.Pedido;
 import madstodolist.model.Usuario;
 import madstodolist.repository.UsuarioRepository;
-import madstodolist.repository.PedidoRepository;  // Agregamos PedidoRepository
+import madstodolist.repository.PedidoRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class UsuarioService {
@@ -98,4 +101,49 @@ public class UsuarioService {
             return List.of();  // Si no se encuentra el usuario, retornamos una lista vacía
         }
     }
+
+    // Método para modificar un usuario
+    @Transactional
+    public void modificarUsuario(UsuarioData usuarioData) {
+        Optional<Usuario> usuarioBD = usuarioRepository.findByEmail(usuarioData.getEmail());
+
+        if (usuarioBD.isPresent()) {
+            Usuario usuario = usuarioBD.get();
+            if (usuarioData.getNombre() != null || !usuarioData.getNombre().isEmpty()) {
+               usuario.setNombre(usuarioData.getNombre());
+           } else if (usuarioData.getPassword() != null || !usuarioData.getPassword().isEmpty()) {
+               usuario.setPassword(usuarioData.getPassword());
+           }
+            usuario.setFechaNacimiento(usuarioData.getFechaNacimiento());
+            usuario.setAdministrador(usuarioData.getAdministrador());
+            usuario = usuarioRepository.save(usuario);
+            modelMapper.map(usuario, UsuarioData.class);
+        } else {
+            throw new UsuarioServiceException("El usuario no existe");
+        }
+    }
+
+    public List<UsuarioData> findAll() {
+        List<Usuario> usuarios = StreamSupport
+                .stream(usuarioRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+        return usuarios.stream()
+                .map(usuario -> new UsuarioData(usuario.getId(), usuario.getEmail(), usuario.getPassword(), usuario.getNombre(),  usuario.getFechaNacimiento(), usuario.getAdministrador()))
+                .collect(Collectors.toList());
+
+    }
+
+    // Método para eliminar un usuario
+    @Transactional
+    public void deleteUser(String email) {
+        Optional<Usuario> usuarioBD = usuarioRepository.findByEmail(email);
+
+        if (usuarioBD.isPresent()) {
+            Usuario usuario = usuarioBD.get();
+            usuarioRepository.delete(usuario);
+        } else {
+            throw new UsuarioServiceException("El usuario no existe");
+        }
+    }
+
 }
