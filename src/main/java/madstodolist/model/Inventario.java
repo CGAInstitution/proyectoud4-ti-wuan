@@ -3,30 +3,26 @@ package madstodolist.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "inventario")
 public class Inventario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne
-    @JoinColumn(name = "producto_id", nullable = false)
+    
+    @ManyToOne
+    @JoinColumn(name = "producto_id", referencedColumnName = "id")
     private Producto producto;
-
-    @Column(nullable = false)
+    
     private int cantidad;
-
-    // Getters y Setters
-
-    public Inventario(Long id, int cantidad, Producto producto) {
-        this.id = id;
-        this.cantidad = cantidad;
+    
+    public Inventario() {}
+    
+    public Inventario(Producto producto, int cantidad) {
         this.producto = producto;
+        this.cantidad = cantidad;
     }
-
-    public Inventario() {
-    }
+    
+    // Getters y Setters
 
     public Long getId() {
         return id;

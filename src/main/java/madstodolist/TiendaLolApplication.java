@@ -27,7 +27,9 @@ public class TiendaLolApplication {
             PedidoRepository pedidoRepo,
             PedidoProductoRepository pedidoProductoRepo,
             DetallePedidoRepository detallePedidoRepo,
-            PedidoService pedidoService // Inyectamos el servicio
+            PedidoService pedidoService, //
+            InventarioRepository inventarioRepo  // Inyectamos el repositorio de Inventario
+            // Inyectamos el servicio// Inyectamos el servicio
     ) {
         return args -> {
             // 1️⃣ Crear un usuario
@@ -128,6 +130,14 @@ public class TiendaLolApplication {
             // 6️⃣ Actualizar total de los pedidos
             pedidoService.actualizarTotal(pedido.getId());
             pedidoService.actualizarTotal(pedido2.getId());
+
+            // 7️⃣ Insertar productos en el inventario
+            inventarioRepo.save(new Inventario(producto, 3)); // Figura de Ahri
+            inventarioRepo.save(new Inventario(producto2, 150)); // Figura de Yasuo
+            inventarioRepo.save(new Inventario(producto3, 200)); // Camiseta de Jinx
+            inventarioRepo.save(new Inventario(producto4, 180)); // Camiseta de Teemo
+            inventarioRepo.save(new Inventario(producto5, 50));  // Teclado de Yasuo
+            inventarioRepo.save(new Inventario(producto6, 70));  // Teclado de Jinx
 
             // ✅ Validar datos guardados
             System.out.println("Usuarios en BD: " + usuarioRepo.count());
