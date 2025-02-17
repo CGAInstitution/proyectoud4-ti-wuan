@@ -71,9 +71,10 @@ public class ProductoService {
         }
     }
 
-    public ProductoData modProduct(ProductoData productoData, CategoriaData categoriaData) {
+    public ProductoData modProduct(ProductoData productoData, CategoriaData categoriaData, int cantidad) {
         try {
             Optional<Producto> producto = productoRepository.findByNombre(productoData.getNombre());
+            Optional<Inventario> inventario = inventarioRepository.findByProductoId(producto.get().getId());
             if (producto.isPresent()) {
                 producto.get().setNombre(productoData.getNombre());
                 producto.get().setDescripcion(productoData.getDescripcion());
@@ -83,6 +84,8 @@ public class ProductoService {
                 categoria.setId(categoriaData.getId());
                 producto.get().setCategoria(categoria);
                 productoRepository.save(producto.get());
+                inventario.get().setCantidad(cantidad);
+                inventarioRepository.save(inventario.get());
             }
             return productoData;
         }catch (Exception e){

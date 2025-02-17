@@ -200,7 +200,7 @@ public class AdminController {
 
         CategoriaData categoria = categoriaService.findById(productoData.getCategoriaId());
 
-        productoService.modProduct(productoData, categoria);
+        productoService.modProduct(productoData, categoria, productoData.getCantidad());
         return "redirect:/admin";
     }
 }
