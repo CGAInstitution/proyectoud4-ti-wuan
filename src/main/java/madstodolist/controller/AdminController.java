@@ -152,7 +152,8 @@ public class AdminController {
                 Files.copy(imagen.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
                 // Establecer la URL de la imagen en el objeto ProductoData
-                productoData.setImagenUrl("/img/" + fileName);
+                productoData.setImagenUrl(fileName);
+                System.out.println("Imagen guardada."+ productoData.getImagenUrl());
             }
         } catch (IOException e) {
             model.addAttribute("errorMessage", "Error al guardar la imagen.");
