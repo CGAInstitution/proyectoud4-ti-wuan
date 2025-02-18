@@ -139,40 +139,6 @@ public class TiendaLolApplication {
             inventarioRepo.save(new Inventario(producto5, 50));  // Teclado de Yasuo
             inventarioRepo.save(new Inventario(producto6, 70));  // Teclado de Jinx
 
-            // ✅ Validar datos guardados
-            System.out.println("Usuarios en BD: " + usuarioRepo.count());
-            System.out.println("Categorías en BD: " + categoriaRepo.count());
-            System.out.println("Productos en BD: " + productoRepo.count());
-            System.out.println("Pedidos en BD: " + pedidoRepo.count());
-            System.out.println("Pedidos-Productos en BD: " + pedidoProductoRepo.count());
-
-            // ✅ Validar total de los pedidos
-            System.out.println("Total Pedido 1: " + pedidoRepo.findById(pedido.getId()).get().getTotal());
-            System.out.println("Total Pedido 2: " + pedidoRepo.findById(pedido2.getId()).get().getTotal());
-
-            // Validación adicional para comprobar eliminación de productos del carrito
-
-            // Simular un carrito
-            List<Producto> carrito = new ArrayList<>();
-            carrito.add(producto);
-            carrito.add(producto2);
-
-            // Mostrar el carrito antes de eliminar
-            System.out.println("Carrito antes de eliminar:");
-            carrito.forEach(p -> System.out.println(p.getNombre()));
-
-            // Eliminar un producto del carrito
-            Long idAEliminar = producto.getId(); // Eliminar la "Figura de Ahri"
-            carrito.removeIf(p -> p.getId().equals(idAEliminar));
-
-            // Mostrar el carrito después de eliminar
-            System.out.println("Carrito después de eliminar:");
-            carrito.forEach(p -> System.out.println(p.getNombre()));
-
-            // ✅ Validar el tamaño de la lista de productos
-            System.out.println("Total productos en BD: " + productoRepo.count());
-            List<Producto> productos = productoRepo.findAll();
-            System.out.println("Productos en BD:" + productos.size());
         };
     }
 
