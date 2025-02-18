@@ -47,14 +47,11 @@ public class PedidoService {
         Usuario usuario = usuarioOpt.get();
         List<Producto> productos = pedidoData.getProductos();
 
-        // Verificar si hay suficiente stock para todos los productos
         List<String> mensajesDeError = verificarStock(productos);
         if (!mensajesDeError.isEmpty()) {
-            // Si no hay suficiente stock, retornamos los mensajes de error y no procedemos con el pedido
             return mensajesDeError;
         }
 
-        // Si el stock es suficiente, creamos el pedido
         Pedido nuevoPedido = new Pedido();
         nuevoPedido.setFecha(pedidoData.getFecha());
         nuevoPedido.setEstado(pedidoData.getEstado());
@@ -92,7 +89,6 @@ public class PedidoService {
 
         nuevoPedido.setPedidoProductos(pedidoProductos);
 
-        // Guardar el pedido con sus relaciones
         pedidoRepository.save(nuevoPedido);
         pedidoRepository.flush();
 

@@ -87,12 +87,10 @@ public List<String> crearPedido(PedidoData pedidoData, Long usuarioId) {
     Usuario usuario = usuarioOpt.get();
     List<Producto> productos = pedidoData.getProductos();
 
-    // Verificar si hay suficiente stock para todos los productos
     List<String> mensajesDeError = verificarStock(productos);
     if (!mensajesDeError.isEmpty()) {
         return mensajesDeError;
     }
-    
     Pedido nuevoPedido = new Pedido();
     nuevoPedido.setFecha(pedidoData.getFecha());
     nuevoPedido.setEstado(pedidoData.getEstado());
@@ -129,25 +127,22 @@ public List<String> crearPedido(PedidoData pedidoData, Long usuarioId) {
     }).collect(Collectors.toList());
 
     nuevoPedido.setPedidoProductos(pedidoProductos);
-    
     pedidoRepository.save(nuevoPedido);
     pedidoRepository.flush();
 
-    // Reducir el stock después de guardar el pedido
-    reducirStockPedido(pedidoProductos);
 
     return List.of("Pedido creado con éxito.");
 }
 ```
 ### 📌 Explicación:
 
-1. **Verificar Stock**: Se comprueba si hay suficiente stock para los productos seleccionados.
-2. **Creación de Pedido**: Se crea un nuevo pedido con la información proporcionada.
-3. **Creación de Detalle de Pedido**: Se añade la dirección de envío y método de pago.
-4. **Creación de PedidoProducto**: Se relacionan los productos con el pedido y se calcula el total.
-5. **Calculo de unidades de un mismo producto**: Se agrupan los productos por ID y se cuentan las unidades.
-6. **Guardar en Base de Datos**: Se guardan los datos en la base de datos y se actualiza el stock.
-7. **Retorno de Mensajes**: Se devuelve un mensaje de éxito o error.
+1. **Verificar Stock**: Se comprueba si hay suficiente stock para los productos seleccionados; si hay errores, se detiene el proceso.
+2. **Creación de Pedido**: Se instancia un nuevo pedido, asignando fecha, estado y total calculado.
+3. **Creación de Detalle de Pedido**: Se añade la dirección de envío y método de pago al pedido.
+4. **Cálculo de unidades de un mismo producto**: Se agrupan los productos por ID y se cuentan las unidades para evitar duplicaciones.
+5. **Creación de PedidoProducto**: Se asocian los productos con el pedido, validando su existencia y categoría.
+6. **Guardar en Base de Datos**: Se guarda el pedido con sus detalles y productos en la base de datos dentro de una transacción.
+7. **Retorno de Mensajes**: Se devuelve un mensaje de éxito o errores en caso de fallos.
 
 ---
 
@@ -171,7 +166,7 @@ public List<String> crearPedido(PedidoData pedidoData, Long usuarioId) {
 
 ### 🎬 Video Tutorial 
 
-[Link drive](https://drive)
+[Link drive](https://drive.google.com/file/d/1HruLNJoV6C_Be5QIj2gfLngzyK5LX9c8/view?usp=sharing)
 
 ---
 
@@ -188,7 +183,7 @@ El equipo utilizó *GitHub Projects* para la planificación y seguimiento de tar
 
 **Panel del proyecto en github:**
 
-[Panel proyecto](/src/main/resources/static/img/panelGithub.)
+![Panel proyecto](/src/main/resources/static/img/panelGithub.png)
 
 ---
 
