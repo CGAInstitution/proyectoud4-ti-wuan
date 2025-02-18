@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modals</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .modal-content {
+            background-color: #1A1A2E;
+            color: white;
+            border: 1px solid #C89B3C;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(200, 155, 60, 0.5);
+        }
+
+        .close {
+            color: #C89B3C;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #A87D2B;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Modal Crear Usuario -->
+<div id="crearUsuarioModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content p-4">
+            <div class="modal-header">
+                <h5 class="modal-title">Crear Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <p>Aquí puedes crear un nuevo usuario.</p>
+                <form method="post" th:action="@{/admin/registro}" th:object="${registroData}">
+                    <div class="mb-3">
+                        <label for="emailUsuario" class="form-label">Correo Electrónico</label>
+                        <input class="form-control" id="emailUsuario" placeholder="Ingrese su correo"
+                               type="text" th:field="*{email}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombreUsuario" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombreUsuario" placeholder="Ingrese su nombre"
+                               th:field="*{nombre}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="passwordUsuario" class="form-label">Contraseña</label>
+                        <input class="form-control" id="passwordUsuario" placeholder="Ingrese su contraseña"
+                               type="password" th:field="*{password}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
+                        <input class="form-control" id="fechaNacimiento" type="text"
+                               placeholder="dd-MM-yyyy" pattern="\d{2}-\d{2}-\d{4}"
+                               th:field="*{fechaNacimiento}" required/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Crear
+                            Usuario
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Modificar Usuario -->
+<div id="modificarUsuarioModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content p-4">
+            <div class="modal-header">
+                <h5 class="modal-title">Modificar Usuario</h5>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Aquí puedes modificar un usuario existente a través del email.</p>
+                <form method="post"  th:action="@{/admin/modUser}" th:object="${registroData}">
+                    <div class="mb-3">
+                        <label for="emailModUsuario" class="form-label">Correo Electrónico</label>
+                        <input class="form-control" id="emailModUsuario" placeholder="Ingrese su correo"
+                               type="text" th:field="*{email}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombreModUsuario" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombreModUsuario" placeholder="Ingrese su nombre"
+                               th:field="*{nombre}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="passwordModUsuario" class="form-label">Contraseña</label>
+                        <input class="form-control" id="passwordModUsuario" placeholder="Ingrese su contraseña"
+                               type="password" th:field="*{password}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaModNacimiento" class="form-label">Fecha de nacimiento</label>
+                        <input class="form-control" id="fechaModNacimiento" type="text"
+                               placeholder="dd-MM-yyyy" pattern="\d{2}-\d{2}-\d{4}"
+                               th:field="*{fechaNacimiento}" required/>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="adminCheck" th:field="*{administrador}">
+                        <label class="form-check-label" for="adminCheck">Administrador</label>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            Modificar Usuario
+                        </button>
+                    </div>
+                </form>
+                <form  method="get"  th:action="@{/admin}">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="usuario : ${usuarios}">
+                                <td th:text="${usuario.id}"></td>
+                                <td th:text="${usuario.nombre}"></td>
+                                <td th:text="${usuario.email}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Eliminar Usuario -->
+<div id="eliminarUsuarioModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content p-4">
+            <div class="modal-header">
+                <h5 class="modal-title">Eliminar Usuario</h5>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Ingrese el correo del usuario que desea eliminar.</p>
+                <form method="post" th:action="@{/admin/deleteUser}" th:object="${registroData}">
+                    <div class="mb-3">
+                        <label for="emailDelUsuario" class="form-label">Correo Electrónico</label>
+                        <input class="form-control" id="emailDelUsuario" placeholder="Ingrese su correo"
+                               type="text" th:field="*{email}" required/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar Usuario</button>
+                    </div>
+                </form>
+                <form  method="get"  th:action="@{/admin}">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="usuario : ${usuarios}">
+                            <td th:text="${usuario.id}"></td>
+                            <td th:text="${usuario.nombre}"></td>
+                            <td th:text="${usuario.email}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Crear Producto -->
+<div id="crearProductoModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content p-4">
+            <div class="modal-header">
+                <h5 class="modal-title">Crear Producto</h5>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Aquí puedes crear un nuevo producto.</p>
+            </div>
+            <form method="post" th:action="@{/admin/addProduct}" th:object="${productoData}" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="nameAddProduc" class="form-label">Nombre del producto</label>
+                    <input class="form-control" id="nameAddProduc" placeholder="Ingrese nombre del producto"
+                           type="text" th:field="*{nombre}" required/>
+                </div>
+                <div class="mb-3">
+                    <label for="descAddProduc" class="form-label">Descripcion</label>
+                    <input type="text" class="form-control" id="descAddProduc" placeholder="Ingrese descripción del producto"
+                           th:field="*{descripcion}" required/>
+                </div>
+                <div class="mb-3">
+                    <label for="priceAddProduc" class="form-label">Precio del producto</label>
+                    <input class="form-control" id="priceAddProduc" placeholder="Ingrese precio del producto"
+                           type="text" th:field="*{precio}" required/>
+                </div>
+                <div class="mb-3">
+                    <label for="imageAddProduc" class="form-label">Imagen</label>
+                    <input class="form-control" id="imageAddProduc" type="file" name="imagen" accept=".jpg" required/>
+                </div>
+                <div class="mb-3">
+                    <label for="CategoriaAddproduc" class="form-label">Id de la categoría</label>
+                    <input class="form-control" id="CategoriaAddproduc" type="text"
+                           placeholder="Introduce la categoría" th:field="*{categoriaId}" required/>
+                </div>
+                <div class="mb-3">
+                    <label for="StockAddproduc" class="form-label">Cantidad de stock</label>
+                    <input class="form-control" id="StockAddproduc" type="text"
+                           placeholder="Introduce la categoría" th:field="*{cantidad}" required/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Crear Producto</button>
+                </div>
+            </form>
+            <form  method="get"  th:action="@{/admin}">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Categoria</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="categoria : ${categorias}">
+                        <td th:text="${categoria.id}"></td>
+                        <td th:text="${categoria.nombre}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Modificar Producto -->
+<div id="modificarProductoModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content p-4">
+            <div class="modal-header">
+                <h5 class="modal-title">Modificar Productos</h5>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Aquí puedes modificar un producto existente a través del nombre.</p>
+                <form method="post" th:action="@{/admin/modProduct}" th:object="${productoData}"  enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="nameModProduc" class="form-label">Nombre del producto</label>
+                        <input class="form-control" id="nameModProduc" placeholder="Ingrese nombre del prodcuto"
+                               type="text" th:field="*{nombre}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descModProduc" class="form-label">Descripcion</label>
+                        <input type="text" class="form-control" id="descModProduc" placeholder="Ingrese descripcion del producto"
+                               th:field="*{descripcion}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="priceModProduc" class="form-label">Precio del producto</label>
+                        <input class="form-control" id="priceModProduc" placeholder="Ingrese precio del producto"
+                               type="text" th:field="*{precio}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="imageModProduc" class="form-label">Imagen</label>
+                        <input class="form-control" id="imageModProduc" type="file" name="imagen" accept=".jpg" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="CategoriaModproduc" class="form-label">Id de la categoria</label>
+                        <input class="form-control" id="CategoriaModproduc" type="text"
+                               placeholder="Introduce la categoria" th:field="*{categoriaId}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="StockModproduc" class="form-label">Cantidad de stock</label>
+                        <input class="form-control" id="StockModproduc" type="number"
+                               placeholder="Introduce la categoría" th:field="*{cantidad}" min="1" required/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Modificar Producto</button>
+                    </div>
+                </form>
+                <form  method="get"  th:action="@{/admin}">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Id Categoria</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="producto : ${productos}">
+                            <td th:text="${producto.id}"></td>
+                            <td th:text="${producto.nombre}"></td>
+                            <td th:text="${producto.precio}"></td>
+                            <td th:text="${producto.categoriaId}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Eliminar Producto -->
+<div id="eliminarProductoModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content p-4">
+            <div class="modal-header">
+                <h5 class="modal-title">Eliminar Producto</h5>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Aquí puedes eliminar un producto existente a través del id.</p>
+                <form method="post" th:action="@{/admin/delProduct}" th:object="${productoData}">
+                    <div class="mb-3">
+                        <label for="idProductoDel" class="form-label">Id del producto</label>
+                        <input class="form-control" id="idProductoDel" placeholder="Ingrese ID del producto"
+                               type="text" th:field="*{id}" required/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar Producto</button>
+                    </div>
+                </form>
+                <form  method="get"  th:action="@{/admin}">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Id Categoria</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="producto : ${productos}">
+                            <td th:text="${producto.id}"></td>
+                            <td th:text="${producto.nombre}"></td>
+                            <td th:text="${producto.precio}"></td>
+                            <td th:text="${producto.categoriaId}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Modificar Producto -->
+<div id="reponerStockModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content p-4">
+            <div class="modal-header">
+                <h5 class="modal-title">Modificar Productos</h5>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Aquí puedes modificar un producto existente a través del nombre.</p>
+                <form method="post" th:action="@{/admin/restore}" th:object="${productoData}"  enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="nameStockProduc" class="form-label">Nombre del producto</label>
+                        <input class="form-control" id="nameStockProduc" placeholder="Ingrese nombre del prodcuto"
+                               type="text" th:field="*{nombre}" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="StockRepproduc" class="form-label">Cantidad de stock</label>
+                        <input class="form-control" id="StockRepproduc" type="number"
+                        placeholder="Introduce la cantidad" th:field="*{cantidad}" min="1" required/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Reponer stock</button>
+                    </div>
+                </form>
+                <form  method="get"  th:action="@{/admin}">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="producto : ${productos}">
+                            <td th:text="${producto.id}"></td>
+                            <td th:text="${producto.nombre}"></td>
+                            <td th:text="${producto.precio}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const fechaInput = document.getElementById("fechaNacimiento");
+        const fechaInputModUs = document.getElementById("fechaModNacimiento");
+
+        fechaInput.addEventListener("input", function (event) {
+            let value = fechaInput.value.replace(/\D/g, ""); // Elimina caracteres no numéricos
+            let formattedValue = "";
+
+            if (value.length > 0) {
+                formattedValue += value.substring(0, 2); // Día
+            }
+            if (value.length > 2) {
+                formattedValue += "-" + value.substring(2, 4); // Mes
+            }
+            if (value.length > 4) {
+                formattedValue += "-" + value.substring(4, 8); // Año
+            }
+
+            fechaInput.value = formattedValue;
+        });
+
+        fechaInputModUs.addEventListener("input", function (event) {
+            let value = fechaInputModUs.value.replace(/\D/g, ""); // Elimina caracteres no numéricos
+            let formattedValue = "";
+
+            if (value.length > 0) {
+                formattedValue += value.substring(0, 2); // Día
+            }
+            if (value.length > 2) {
+                formattedValue += "-" + value.substring(2, 4); // Mes
+            }
+            if (value.length > 4) {
+                formattedValue += "-" + value.substring(4, 8); // Año
+            }
+
+            fechaInputModUs.value = formattedValue;
+        });
+    });
+</script>
+
+
+</body>
+</html>

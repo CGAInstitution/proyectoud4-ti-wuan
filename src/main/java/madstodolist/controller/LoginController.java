@@ -42,13 +42,22 @@ public class LoginController {
         // Llamada al servicio para comprobar si el login es correcto
         UsuarioService.LoginStatus loginStatus = usuarioService.login(loginData.geteMail(), loginData.getPassword());
 
-        if (loginStatus == UsuarioService.LoginStatus.LOGIN_OK) {
+        if ((loginStatus == UsuarioService.LoginStatus.LOGIN_OK)
+                && (usuarioService.findByEmail(loginData.geteMail()).getAdministrador())) {
             UsuarioData usuario = usuarioService.findByEmail(loginData.geteMail());
-
+            session.setAttribute("userId", usuario.getId());
             managerUserSession.logearUsuario(usuario.getId());
 
-            return "redirect:/usuarios/" + usuario.getId() + "/tareas";
-        } else if (loginStatus == UsuarioService.LoginStatus.USER_NOT_FOUND) {
+            return "redirect:/admin";
+        }
+        else if (loginStatus == UsuarioService.LoginStatus.LOGIN_OK){{
+            UsuarioData usuario = usuarioService.findByEmail(loginData.geteMail());
+            session.setAttribute("userId", usuario.getId());
+            managerUserSession.logearUsuario(usuario.getId());
+
+            return "redirect:/Tienda";
+        }
+        }else if (loginStatus == UsuarioService.LoginStatus.USER_NOT_FOUND) {
             model.addAttribute("error", "No existe usuario");
             return "formLogin";
         } else if (loginStatus == UsuarioService.LoginStatus.ERROR_PASSWORD) {
@@ -82,6 +91,7 @@ public class LoginController {
         usuario.setPassword(registroData.getPassword());
         usuario.setFechaNacimiento(registroData.getFechaNacimiento());
         usuario.setNombre(registroData.getNombre());
+        usuario.setAdministrador(false);
 
         usuarioService.registrar(usuario);
         return "redirect:/login";

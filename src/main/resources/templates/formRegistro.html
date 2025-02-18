@@ -1,19 +1,76 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments :: head (titulo='Registro')"></head>
+<head>
+    <title>Login - Tienda LoL</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            background-color: #0A0A12;
+            color: white;
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .btn-primary {
+            background-color: #C89B3C;
+            border-color: #C89B3C;
+        }
+
+        .btn-primary:hover {
+            background-color: #A87D2B;
+            border-color: #A87D2B;
+        }
+
+        .footer {
+            background-color: #1A1A2E;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+        }
+
+        .form-container {
+            background-color: #1A1A2E;
+            border-radius: 8px;
+            padding: 40px;
+            margin-top: 50px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-container .form-group label {
+            font-weight: bold;
+        }
+
+        .form-container .alert {
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
 
 <body>
 <div class="container-fluid">
 
     <div class="row justify-content-center mb-3">
         <div class="col-auto">
-            <h2>Registro nuevo usuario</h2>
+            <h2>Registro nuevo</h2>
         </div>
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-6">
+        <div class="col-6 form-container">
             <form method="post" th:action="@{/registro}" th:object="${registroData}">
                 <div class="row justify-content-center">
                     <div class="col-6">
@@ -60,7 +117,35 @@
     </div>
 </div>
 
-<div th:replace="fragments::javascript"/>
+<footer class="footer">
+    <p>&copy; 2025 Tienda LoL. Todos los derechos reservados.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const fechaInput = document.getElementById("fechaNacimiento");
+
+        fechaInput.addEventListener("input", function (event) {
+            let value = fechaInput.value.replace(/\D/g, ""); // Elimina caracteres no numéricos
+            let formattedValue = "";
+
+            if (value.length > 0) {
+                formattedValue += value.substring(0, 2); // Día
+            }
+            if (value.length > 2) {
+                formattedValue += "-" + value.substring(2, 4); // Mes
+            }
+            if (value.length > 4) {
+                formattedValue += "-" + value.substring(4, 8); // Año
+            }
+
+            fechaInput.value = formattedValue;
+        });
+
+    });
+</script>
 
 </body>
 </html>

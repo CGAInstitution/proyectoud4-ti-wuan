@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // A diferencia de los tests web de tarea, donde usábamos los datos
 // de prueba de la base de datos, aquí vamos a practicar otro enfoque:
 // moquear el usuarioService.
-public class UsuarioWebTest {
+public class UsuarioPruebaWebTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -41,7 +41,8 @@ public class UsuarioWebTest {
 
         UsuarioData anaGarcia = new UsuarioData();
         anaGarcia.setNombre("Ana García");
-        anaGarcia.setId(1L);
+        anaGarcia.setId(3L);
+        anaGarcia.setAdministrador(false);
 
         when(usuarioService.login("ana.garcia@gmail.com", "12345678"))
                 .thenReturn(UsuarioService.LoginStatus.LOGIN_OK);
@@ -57,7 +58,7 @@ public class UsuarioWebTest {
                         .param("eMail", "ana.garcia@gmail.com")
                         .param("password", "12345678"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/usuarios/1/tareas"));
+                .andExpect(redirectedUrl("/Tienda"));
     }
 
     @Test
