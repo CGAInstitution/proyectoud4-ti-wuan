@@ -1,7 +1,7 @@
 	-- Crear la base de datos
-DROP DATABASE IF EXISTS tienda_lol_2;
-CREATE DATABASE tienda_lol_2;
-USE tienda_lol_2;
+DROP DATABASE IF EXISTS tienda_lol;
+CREATE DATABASE tienda_lol;
+USE tienda_lol;
 
 
 	-- Crear la tabla de usuarios

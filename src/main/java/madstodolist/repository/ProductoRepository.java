@@ -1,7 +1,6 @@
 package madstodolist.repository;
 
 import madstodolist.model.Producto;
-import madstodolist.model.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
