@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
-
 @Controller
 @RequestMapping("/Tienda/Cesta")
 public class CarritoController {
@@ -29,7 +28,7 @@ public class CarritoController {
 
     @GetMapping
     public String mostrarCarrito(HttpSession session, Model model) {
-        session.getAttribute("userId");
+        Long usuarioId = (Long) session.getAttribute("userId");
         List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
         if (carrito == null) {
             carrito = new ArrayList<>();
@@ -65,7 +64,6 @@ public class CarritoController {
         return "redirect:/Tienda/Cesta";
     }
 
-
     @PostMapping("/checkout")
     public String finalizarCompra(@RequestParam String direccion,
                                   @RequestParam String metodoPago,
@@ -84,13 +82,16 @@ public class CarritoController {
             return "cesta";
         }
 
+        // Map para contar la cantidad de cada producto en el carrito
         Map<Long, Integer> cantidadProductos = new HashMap<>();
         for (Producto producto : carrito) {
             cantidadProductos.put(producto.getId(), cantidadProductos.getOrDefault(producto.getId(), 0) + 1);
         }
 
+        // Map para registrar los productos sin stock suficiente
         Map<String, Integer> productosSinStock = new HashMap<>();
 
+        // Verificación del stock
         for (Map.Entry<Long, Integer> entry : cantidadProductos.entrySet()) {
             Long productoId = entry.getKey();
             int cantidadEnCarrito = entry.getValue();
@@ -103,6 +104,7 @@ public class CarritoController {
             }
         }
 
+        // Si algún producto no tiene suficiente stock, mostramos un mensaje de error
         if (!productosSinStock.isEmpty()) {
             List<String> mensajesDeError = new ArrayList<>();
             for (Map.Entry<String, Integer> entry : productosSinStock.entrySet()) {
@@ -114,19 +116,23 @@ public class CarritoController {
             return "cesta";
         }
 
+        // Crear el pedido con la información del carrito
         PedidoData pedidoData = new PedidoData();
         pedidoData.setFecha(new Date());
         pedidoData.setEstado(Pedido.EstadoPedido.PENDIENTE);
         pedidoData.setTotal(carrito.stream().mapToDouble(Producto::getPrecio).sum());
         pedidoData.setPedidos(carrito);
 
+        // Detalles del pedido
         DetallePedido detalle = new DetallePedido();
         detalle.setDireccionEnvio(direccion);
         detalle.setMetodoPago(DetallePedido.MetodoPago.fromString(metodoPago.toUpperCase()));
         pedidoData.setDetallePedido(detalle);
 
+        // Llamar al servicio para crear el pedido
         pedidoService.crearPedido(pedidoData, usuarioId);
 
+        // Reducir el stock de los productos
         for (Map.Entry<Long, Integer> entry : cantidadProductos.entrySet()) {
             Optional<Inventario> inventarioOpt = inventarioRepository.findByProductoId(entry.getKey());
             inventarioOpt.ifPresent(inventario -> {
@@ -135,6 +141,7 @@ public class CarritoController {
             });
         }
 
+        // Limpiar el carrito después de la compra
         session.removeAttribute("carrito");
         return "redirect:/Tienda";
     }

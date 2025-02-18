@@ -49,6 +49,13 @@ public class Pedido {
         this.total = calcularTotal();
     }
 
+    public Pedido(Usuario usuario, Date fecha, EstadoPedido estado) {
+        this.usuario = usuario;
+        this.fecha = fecha;
+        this.estado = estado;
+        this.total = calcularTotal();
+    }
+
     public Pedido() {
     }
 

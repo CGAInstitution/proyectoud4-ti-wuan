@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class DetallePedido {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pedidoId;
 
     @OneToOne
@@ -42,6 +43,12 @@ public class DetallePedido {
 
     public DetallePedido(Long pedidoId, Pedido pedido, String direccionEnvio, MetodoPago metodoPago) {
         this.pedidoId = pedidoId;
+        this.pedido = pedido;
+        this.direccionEnvio = direccionEnvio;
+        this.metodoPago = metodoPago;
+    }
+
+    public DetallePedido(Pedido pedido, String direccionEnvio, MetodoPago metodoPago) {
         this.pedido = pedido;
         this.direccionEnvio = direccionEnvio;
         this.metodoPago = metodoPago;

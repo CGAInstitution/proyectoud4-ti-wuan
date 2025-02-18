@@ -34,6 +34,23 @@
             width: 100%;
             bottom: 0;
         }
+        /* Añadir color blanco a los elementos del perfil */
+        .card-title, .card-text {
+            color: white;
+        }
+
+        /* Para asegurar que los datos de la tabla de pedidos se muestren en blanco */
+        .table th, .table td {
+            color: white;
+        }
+
+        .table-dark {
+            background-color: #222;
+        }
+
+        .table-striped tbody tr:nth-child(odd) {
+            background-color: #1A1A2E;
+        }
     </style>
 </head>
 <body>
@@ -93,13 +110,11 @@
                         <tr th:each="pedido : ${usuario.pedidos}">
                             <td th:text="${pedido.id}">1</td>
                             <td th:text="${pedido.fecha}">01/01/2025</td>
-                            <td th:text="${pedido.detallePedido.direccionEnvio}">Calle 123 </td>
-                            <td th:text="${pedido.detallePedido.metodoPago}">Tarjeta </td>
-                            <!-- Mostrar el total de detallePedido -->
+                            <td th:text="${pedido.detallePedido.direccionEnvio}">Calle 123</td>
+                            <td th:text="${pedido.detallePedido.metodoPago}">Tarjeta</td>
                             <td th:text="${pedido.total}">$100.00</td>
                             <td th:text="${pedido.estado}">Enviado</td>
                             <td>
-                                <!-- Mostrar productos y sus cantidades usando PedidoProducto -->
                                 <ul>
                                     <li th:each="pedidoProducto : ${pedido.pedidoProductos}">
                                         <span th:text="${pedidoProducto.producto.nombre}">Producto</span> -

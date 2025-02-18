@@ -23,8 +23,7 @@ public class PedidoProducto {
 
     // Getters y Setters
 
-    public PedidoProducto(Long id, Pedido pedido, Producto producto, int cantidad) {
-        this.id = id;
+    public PedidoProducto(Pedido pedido, Producto producto, int cantidad) {
         this.cantidad = cantidad;
         this.pedido = pedido;
         this.producto = producto;
