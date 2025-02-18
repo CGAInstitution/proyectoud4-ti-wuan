@@ -3,7 +3,9 @@ package madstodolist.service;
 import madstodolist.dto.CategoriaData;
 import madstodolist.dto.ProductoData;
 import madstodolist.model.Categoria;
+import madstodolist.model.Inventario;
 import madstodolist.model.Producto;
+import madstodolist.repository.InventarioRepository;
 import madstodolist.repository.ProductoRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,11 @@ public class ProductoService {
 
     private final ProductoRepository productoRepository;
 
-    public ProductoService(ProductoRepository productoRepository) {
+    private final InventarioRepository inventarioRepository;
+
+    public ProductoService(ProductoRepository productoRepository, InventarioRepository inventarioRepository) {
         this.productoRepository = productoRepository;
+        this.inventarioRepository = inventarioRepository;
     }
 
     public Optional<Producto> obtenerProductoPorId(Long id) {
@@ -44,7 +49,7 @@ public class ProductoService {
         }
     }
 
-    public ProductoData addProduct(ProductoData productoData, CategoriaData categoriaData) {
+    public ProductoData addProduct(ProductoData productoData, CategoriaData categoriaData, int cantidad) {
         try {
             Producto producto = new Producto();
             producto.setNombre(productoData.getNombre());
@@ -55,6 +60,10 @@ public class ProductoService {
             categoria.setId(categoriaData.getId());
             producto.setCategoria(categoria);
             productoRepository.save(producto);
+            Inventario inventario = new Inventario();
+            inventario.setCantidad(cantidad);
+            inventario.setProducto(producto);
+            inventarioRepository.save(inventario);
             return productoData;
         }catch (Exception e){
             System.out.println("Error al añadir el producto");
@@ -62,9 +71,10 @@ public class ProductoService {
         }
     }
 
-    public ProductoData modProduct(ProductoData productoData, CategoriaData categoriaData) {
+    public ProductoData modProduct(ProductoData productoData, CategoriaData categoriaData, int cantidad) {
         try {
             Optional<Producto> producto = productoRepository.findByNombre(productoData.getNombre());
+            Optional<Inventario> inventario = inventarioRepository.findByProductoId(producto.get().getId());
             if (producto.isPresent()) {
                 producto.get().setNombre(productoData.getNombre());
                 producto.get().setDescripcion(productoData.getDescripcion());
@@ -74,11 +84,26 @@ public class ProductoService {
                 categoria.setId(categoriaData.getId());
                 producto.get().setCategoria(categoria);
                 productoRepository.save(producto.get());
+                inventario.get().setCantidad(cantidad);
+                inventarioRepository.save(inventario.get());
             }
             return productoData;
         }catch (Exception e){
             System.out.println("Error al modificar el producto");
             return null;
+        }
+    }
+
+    public void restoreProduct(String nombre, int cantidad) {
+        try {
+            Optional<Producto> producto = productoRepository.findByNombre(nombre);
+            Optional<Inventario> inventario = inventarioRepository.findByProductoId(producto.get().getId());
+            if (producto.isPresent()) {
+                inventario.get().setCantidad(cantidad);
+                inventarioRepository.save(inventario.get());
+            }
+        }catch (Exception e){
+            System.out.println("Error al restaurar el producto");
         }
     }
 }

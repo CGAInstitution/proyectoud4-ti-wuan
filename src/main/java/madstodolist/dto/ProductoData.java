@@ -7,6 +7,7 @@ public class ProductoData {
     private Double precio;
     private String imagenUrl;
     private Long categoriaId;
+    private int cantidad;
 
 
     public ProductoData() {
@@ -19,6 +20,14 @@ public class ProductoData {
         this.precio = precio;
         this.imagenUrl = imagenUrl;
         this.categoriaId = categoriaId;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
     public Long getId() {

@@ -2,17 +2,17 @@ package madstodolist.controller;
 
 import madstodolist.dto.PedidoData;
 import madstodolist.model.DetallePedido;
+import madstodolist.model.Inventario;
 import madstodolist.model.Pedido;
 import madstodolist.model.Producto;
+import madstodolist.repository.InventarioRepository;
 import madstodolist.service.PedidoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Controller
@@ -20,9 +20,11 @@ import java.util.List;
 public class CarritoController {
 
     private final PedidoService pedidoService;
+    private final InventarioRepository inventarioRepository;
 
-    public CarritoController(PedidoService pedidoService) {
+    public CarritoController(PedidoService pedidoService, InventarioRepository inventarioRepository) {
         this.pedidoService = pedidoService;
+        this.inventarioRepository = inventarioRepository;
     }
 
     @GetMapping
@@ -70,40 +72,70 @@ public class CarritoController {
                                   Model model,
                                   HttpSession session) {
         List<Producto> carrito = (List<Producto>) session.getAttribute("carrito");
-        System.out.println("Carrito: " + carrito);
         Long usuarioId = (Long) session.getAttribute("userId");
-        System.out.println("UsuarioId: " + usuarioId);
 
         if (carrito == null || carrito.isEmpty()) {
-            model.addAttribute("mensaje", "El carrito está vacío.");
-            return "redirect:/Tienda/Cesta";
+            model.addAttribute("mensajesDeError", List.of("El carrito está vacío."));
+            return "cesta";
         }
 
         if (usuarioId == null) {
-            model.addAttribute("mensaje", "Usuario no autenticado.");
-            return "redirect:/Tienda/Cesta";
+            model.addAttribute("mensajesDeError", List.of("Usuario no autenticado."));
+            return "cesta";
         }
 
-        // Crear objeto PedidoData
+        Map<Long, Integer> cantidadProductos = new HashMap<>();
+        for (Producto producto : carrito) {
+            cantidadProductos.put(producto.getId(), cantidadProductos.getOrDefault(producto.getId(), 0) + 1);
+        }
+
+        Map<String, Integer> productosSinStock = new HashMap<>();
+
+        for (Map.Entry<Long, Integer> entry : cantidadProductos.entrySet()) {
+            Long productoId = entry.getKey();
+            int cantidadEnCarrito = entry.getValue();
+
+            Optional<Inventario> inventarioOpt = inventarioRepository.findByProductoId(productoId);
+            int stockDisponible = inventarioOpt.map(Inventario::getCantidad).orElse(0);
+
+            if (cantidadEnCarrito > stockDisponible) {
+                productosSinStock.put(inventarioOpt.map(i -> i.getProducto().getNombre()).orElse("Producto desconocido"), stockDisponible);
+            }
+        }
+
+        if (!productosSinStock.isEmpty()) {
+            List<String> mensajesDeError = new ArrayList<>();
+            for (Map.Entry<String, Integer> entry : productosSinStock.entrySet()) {
+                mensajesDeError.add("No hay suficiente stock de '" + entry.getKey() + "'. Puedes comprar hasta " + Math.max(entry.getValue(), 0) + " unidades.");
+            }
+            model.addAttribute("mensajesDeError", mensajesDeError);
+            model.addAttribute("carrito", carrito);
+            model.addAttribute("total", carrito.stream().mapToDouble(Producto::getPrecio).sum());
+            return "cesta";
+        }
+
         PedidoData pedidoData = new PedidoData();
         pedidoData.setFecha(new Date());
         pedidoData.setEstado(Pedido.EstadoPedido.PENDIENTE);
         pedidoData.setTotal(carrito.stream().mapToDouble(Producto::getPrecio).sum());
         pedidoData.setPedidos(carrito);
 
-        // Crear objeto DetallePedido con dirección y metodo de pago
         DetallePedido detalle = new DetallePedido();
         detalle.setDireccionEnvio(direccion);
         detalle.setMetodoPago(DetallePedido.MetodoPago.fromString(metodoPago.toUpperCase()));
         pedidoData.setDetallePedido(detalle);
-        System.out.println("PedidoData: " + pedidoData);
-        // Guardar pedido
+
         pedidoService.crearPedido(pedidoData, usuarioId);
 
-        // Vaciar el carrito
+        for (Map.Entry<Long, Integer> entry : cantidadProductos.entrySet()) {
+            Optional<Inventario> inventarioOpt = inventarioRepository.findByProductoId(entry.getKey());
+            inventarioOpt.ifPresent(inventario -> {
+                inventario.setCantidad(inventario.getCantidad() - entry.getValue());
+                inventarioRepository.save(inventario);
+            });
+        }
+
         session.removeAttribute("carrito");
-
         return "redirect:/Tienda";
-
     }
 }
