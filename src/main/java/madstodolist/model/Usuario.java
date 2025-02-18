@@ -32,10 +32,6 @@ public class Usuario implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fechaNacimiento;
 
-    // Relación con tareas
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Tarea> tareas = new HashSet<>();
-
     // Relación con pedidos
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Pedido> pedidos = new HashSet<>();  // Nueva relación con pedidos
@@ -92,26 +88,6 @@ public class Usuario implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public Set<Tarea> getTareas() {
-        return tareas;
-    }
-
-    public void setTareas(Set<Tarea> tareas) {
-        this.tareas = tareas;
-    }
-
-    // Métodos helper para manejar tareas
-    public void addTarea(Tarea tarea) {
-        if (tareas.contains(tarea)) return;
-        tareas.add(tarea);
-        tarea.setUsuario(this);
-    }
-
-    public void removeTarea(Tarea tarea) {
-        if (tareas.remove(tarea)) {
-            tarea.setUsuario(null);
-        }
-    }
 
     public Set<Pedido> getPedidos() {  // Getter para pedidos
         return pedidos;
@@ -140,7 +116,7 @@ public class Usuario implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
-        return id != null && id.equals(usuario.id);
+        return id != null && id.equals(usuario.id) || email != null && email.equals(usuario.email) ;
     }
 
     @Override

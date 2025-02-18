@@ -41,7 +41,8 @@ public class UsuarioPruebaWebTest {
 
         UsuarioData anaGarcia = new UsuarioData();
         anaGarcia.setNombre("Ana García");
-        anaGarcia.setId(1L);
+        anaGarcia.setId(3L);
+        anaGarcia.setAdministrador(false);
 
         when(usuarioService.login("ana.garcia@gmail.com", "12345678"))
                 .thenReturn(UsuarioService.LoginStatus.LOGIN_OK);
@@ -57,7 +58,7 @@ public class UsuarioPruebaWebTest {
                         .param("eMail", "ana.garcia@gmail.com")
                         .param("password", "12345678"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/usuarios/1/tareas"));
+                .andExpect(redirectedUrl("/Tienda"));
     }
 
     @Test
