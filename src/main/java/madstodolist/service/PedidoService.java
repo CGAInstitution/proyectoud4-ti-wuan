@@ -96,8 +96,6 @@ public class PedidoService {
         pedidoRepository.save(nuevoPedido);
         pedidoRepository.flush();
 
-        // Reducir el stock después de guardar el pedido
-        reducirStockPedido(pedidoProductos);
 
         return List.of("Pedido creado con éxito.");
     }

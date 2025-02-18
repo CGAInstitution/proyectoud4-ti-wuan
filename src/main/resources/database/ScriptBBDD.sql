@@ -49,10 +49,9 @@ CREATE TABLE pedidos (
 
 	-- Crear la tabla intermedia para la relación N:N entre pedidos y productos
 CREATE TABLE pedido_producto (
-    pedido_id BIGINT,
+    pedido_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     producto_id BIGINT,
     cantidad INT NOT NULL DEFAULT 1,
-    PRIMARY KEY (pedido_id, producto_id),
     FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE,
     FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE
 );
@@ -61,7 +60,7 @@ CREATE TABLE pedido_producto (
 
 	-- Crear la tabla de detalles de pedido (1:1 con pedidos)
 CREATE TABLE detalle_pedido (
-    pedido_id BIGINT PRIMARY KEY,
+    pedido_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     direccion_envio VARCHAR(255) NOT NULL,
     metodo_pago ENUM('Tarjeta', 'PayPal', 'Transferencia') NOT NULL,  -- ENUM para los métodos de pago
     FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE
@@ -76,32 +75,6 @@ CREATE TABLE inventario (
     cantidad INT NOT NULL DEFAULT 0,
     FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE
 );
-	-- Crear un trigger para actualizar el inventario después de realizar un pedido
-DELIMITER $$
-
-CREATE TRIGGER verificar_inventario
-BEFORE INSERT ON pedido_producto
-FOR EACH ROW
-BEGIN
-    DECLARE stock_disponible INT;
-
-    -- Obtener el stock disponible
-    SELECT cantidad INTO stock_disponible FROM inventario WHERE producto_id = NEW.producto_id;
-
-    -- Verificar si hay suficiente stock
-    IF stock_disponible IS NULL OR stock_disponible < NEW.cantidad THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stock insuficiente';
-    ELSE
-        -- Descontar el inventario antes de insertar el pedido
-        UPDATE inventario
-        SET cantidad = cantidad - NEW.cantidad
-        WHERE producto_id = NEW.producto_id;
-    END IF;
-END;
-
-
-DELIMITER ;
-
 CREATE INDEX idx_producto ON inventario (producto_id);
 CREATE INDEX idx_pedido_producto ON pedido_producto (pedido_id, producto_id);
 

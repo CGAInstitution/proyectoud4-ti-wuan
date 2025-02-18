@@ -27,6 +27,11 @@ public class Categoria {
         this.productos = productos;
     }
 
+    public Categoria( String nombre, String descripcion) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+    }
+
     public Categoria() {
     }
 

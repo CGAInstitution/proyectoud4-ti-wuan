@@ -38,6 +38,14 @@ public class Producto {
         this.categoria = categoria;
     }
 
+    public Producto(String nombre, String descripcion, Double precio, String imagenUrl, Categoria categoria) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.imagenUrl = imagenUrl;
+        this.categoria = categoria;
+    }
+
     public Producto() {
     }
 
