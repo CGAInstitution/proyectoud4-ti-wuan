@@ -93,4 +93,17 @@ public class ProductoService {
             return null;
         }
     }
+
+    public void restoreProduct(String nombre, int cantidad) {
+        try {
+            Optional<Producto> producto = productoRepository.findByNombre(nombre);
+            Optional<Inventario> inventario = inventarioRepository.findByProductoId(producto.get().getId());
+            if (producto.isPresent()) {
+                inventario.get().setCantidad(cantidad);
+                inventarioRepository.save(inventario.get());
+            }
+        }catch (Exception e){
+            System.out.println("Error al restaurar el producto");
+        }
+    }
 }

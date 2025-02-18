@@ -203,4 +203,16 @@ public class AdminController {
         productoService.modProduct(productoData, categoria, productoData.getCantidad());
         return "redirect:/admin";
     }
+
+    @PostMapping("/admin/restore")
+    public String restoreProduct(@Valid ProductoData productoData, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors() || productoData.getId() == null) {
+            model.addAttribute("errorMessage", "Errores en el formulario. Por favor, corrige los campos marcados y asegúrate de que todos los campos estén llenos.");
+
+            model.addAttribute("productoData", productoData);
+        }
+
+        productoService.restoreProduct(productoData.getNombre(), productoData.getCantidad());
+        return "redirect:/admin";
+    }
 }
